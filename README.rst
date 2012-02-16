@@ -1,4 +1,4 @@
 
-**Just got started **
+**Just got started**
 
 http://wiki.fossee.in/JAM
