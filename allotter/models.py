@@ -2,11 +2,12 @@ from django.db import models
 
 from  datetime import datetime
 
-class Options(models.Model):
+class Option(models.Model):
         opt_name = models.CharField(max_length=100, 
                 verbose_name=u"Option name", 
                 help_text=u"Name of Option/Stream")
-
+        class Meta:
+                verbose_name_plural = "Options"
 
 class Exam(models.Model):
         exam_code = models.CharField(max_length=100, 
@@ -15,7 +16,7 @@ class Exam(models.Model):
         exam_name = models.CharField(max_length=100, 
                 verbose_name=u"Examination name", 
                 help_text=u"Subject name of the examination")
-        option_available = models.ForeignKey("Options",
+        option_available = models.ForeignKey("Option",
                 default=1)
 
         def __unicode__(self):
