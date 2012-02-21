@@ -128,7 +128,6 @@ INSTALLED_APPS = (
     'registration',
 
     'allotter',
-    'profiler'
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7
