@@ -109,6 +109,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_DIR, "template")
 )
 
 INSTALLED_APPS = (
@@ -122,15 +123,20 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-
     #Third-Party Apps
     'south',
-    'registration',
 
     'allotter',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_HOST='localhost'
+EMAIL_PORT=1025
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
+EMAIL_USE_TLS=False
+DEFAULT_FROM_EMAIL='primal@fossee.in'
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -154,3 +160,5 @@ LOGGING = {
         },
     }
 }
+
+AUTH_PROFILE_MODULE = "allotter.Profile"
