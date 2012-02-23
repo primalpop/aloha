@@ -1,6 +1,6 @@
-from allotter.models import Student, Exam, Options
+from allotter.models import Exam, Option, Application
 from django.contrib import admin
 
-admin.site.register(Student)
 admin.site.register(Exam)
-admin.site.register(Options)
+admin.site.register(Option)
+admin.site.register(Application)
