@@ -1,5 +1,4 @@
 
-allotter/migrations
-allotter/migrations/*
+*~
 *.pyc
 jam
