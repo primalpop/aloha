@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<p> Welcome to the Allotment.
+Please login to proceed.</p>
+
+<form action="" method="post">
+{% csrf_token %}
+
+<table>
+{{ form.as_table }}
+</table>
+
+<input type="submit" value="Login" />
+</form>
+<!-- <a href="{{URL_ROOT}}/exam/forgotpassword/">Forgot Password</a> <br /> -->
+<a href="{{URL_ROOT}}/allotter/register/">New User Registration</a> 
+{% endblock content %}

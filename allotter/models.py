@@ -10,8 +10,10 @@ EXAMINATION_SUBJECTS = (
     )
 
 CATEGORIES = (
-    ("GEN", "GENERAL"),
-    ("OBC", "OTHER BACKWARD CASTE"),
+    ("GEN", "GEN"),
+    ("OBC", "OBC(Non-Creamy Layer)"),
+    ("SC", "SC"),
+    ("ST", "ST"),
     )
 
 AVAILABLE_OPTIONS = ( 
@@ -27,22 +29,10 @@ APPLICATION_STATUS = (
     ("I", "Incomplete"),
     ("Submitted", "Submitted"))
 
+BIRTH_YEAR_CHOICES = ('1989', '1990', '1991')
 
-class Option(models.Model):
 
-    opt_name = models.CharField(max_length=100, 
-        verbose_name=u"Option name", 
-        help_text=u"Name of Option/Stream",
-        choices = AVAILABLE_OPTIONS)
-
-    seats = models.IntegerField(verbose_name=u"Seats available")
-
-    class Meta:
-        verbose_name_plural = "Options"
-        
-    def __unicode__(self):
-        return self.opt_name
-
+DEFAULT_EXAM_ID = 1
 
 class Exam(models.Model):
 
@@ -59,21 +49,47 @@ class Exam(models.Model):
         return self.exam_name
 
 
+class Option(models.Model):
+
+    opt_name = models.CharField(max_length=100, 
+        verbose_name=u"Option name", 
+        help_text=u"Name of Option/Stream",
+        choices = AVAILABLE_OPTIONS)
+
+    seats = models.IntegerField(verbose_name=u"Seats available")
+
+    exam = models.ManyToManyField(Exam, default=DEFAULT_EXAM_ID)
+
+    class Meta:
+        verbose_name_plural = "Options"
+        
+    def __unicode__(self):
+        return self.opt_name
+
+
 class Profile(models.Model):
 
     user = models.OneToOneField(User)
 
-    roll_number = models.CharField(max_length=20,
-        verbose_name=u"Examination Roll number",
-        help_text=u"Roll number as per the Examination Hall ticket")
+    application_number = models.IntegerField(max_length=20,
+        verbose_name=u"Examination Application number",
+        help_text=u"Application number as per the Examination Hall ticket")
 
     dob = models.DateTimeField(verbose_name=u"Date of Birth",
         help_text=u"Date of birth as given in the application")
 
     category = models.CharField(max_length=30, choices=CATEGORIES)
 
+    exam_code = models.CharField(max_length=30, choices=EXAMINATION_SUBJECTS)
+
+    rank = models.IntegerField(max_length=6)
+
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+	
+    pd = models.BooleanField(default=False) 	
+
     def __unicode__(self):
-        return self.name
+        return self.user.application_number
 
 class Application(models.Model):
     """An application for the student - one per student
@@ -91,6 +107,10 @@ class Application(models.Model):
     status = models.CharField(max_length=24, choices=APPLICATION_STATUS)
 
     editable = models.BooleanField(default=True)
+
+    def is_application_editable(self):
+        if self.status == "I": return True
+        else: return False
 
     def __unicode__(self):
         u = self.user
