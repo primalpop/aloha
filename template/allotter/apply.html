@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Application form {% endblock %}
+
+{% block content %}
+Choose the options as per your preference
+
+<h3> {{user.first_name}} {{user.last_name}}</h3>
+
+<h3> {{subject}} </h3>
+
+<form action="/allotter/save" method="post">
+{% csrf_token %}
+
+{% for option in options %} 
+<input name="option" type="check" value="{{option}}" />{{option.opt_name}}<br/>
+{% endfor %}
+
+<input type="submit" name="save" value="Save" />
+</form>
+
+<form action="/allotter/quit/" method="post">
+{% csrf_token %}
+<input type="submit" name="quit" value="Quit Allotment" />
+</form>
+
+{% endblock content %}
