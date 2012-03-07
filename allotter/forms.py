@@ -10,6 +10,8 @@ from string import digits, letters, punctuation
 
 from allotter.models import BIRTH_YEAR_CHOICES, GENDER_CHOICES, EXAMINATION_SUBJECTS, CATEGORIES
 
+from allotter.models import Option
+
 PWD_CHARS = letters + punctuation + digits
 
 class RegistrationForm(forms.Form):
@@ -88,7 +90,7 @@ class RegistrationForm(forms.Form):
         new_profile.gender = cleaned_data["gender"]
         new_profile.rank = cleaned_data["air"]
         new_profile.category = cleaned_data["category"]
-        new_profile.dob = cleaned_date["dob"]
+        new_profile.dob = cleaned_data["dob"]
         new_profile.application_number = cleaned_data["app_no"]
         new_profile.save()
 
@@ -108,4 +110,5 @@ class UserLoginForm(forms.Form):
             raise forms.ValidationError("Invalid username/password")
 
         return user
+
 

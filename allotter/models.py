@@ -89,7 +89,7 @@ class Profile(models.Model):
     pd = models.BooleanField(default=False) 	
 
     def __unicode__(self):
-        return self.user.application_number
+        return unicode(self.application_number)
 
 class Application(models.Model):
     """An application for the student - one per student

@@ -1,9 +1,10 @@
 from django.contrib.auth import login, logout, authenticate
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.http import Http404
 
-from allotter.models import Profile
+from allotter.models import Profile, Option, Exam
 from allotter.forms import RegistrationForm, UserLoginForm
 
 from settings import URL_ROOT
@@ -33,7 +34,7 @@ def user_register(request):
 
             new_user = authenticate(username = u_name, password = pwd)
             login(request, new_user)
-            return redirect("/allotter/login/")
+            return redirect("allotter/hello/")
                 
         else:
             return render_to_response('allotter/register.html',
@@ -75,3 +76,16 @@ def hello(request):
     return render_to_response('allotter/hello.html', context, 
                                      context_instance=ci)
 
+def apply(request):
+    user = request.user
+    if not(user.is_authenticated()):
+        return redirect('/allotter/login/')
+    user_profile = user.get_profile()
+    subject = user_profile.exam_code
+    options_available = Option.objects.filter(exam__exam_code=subject).distinct()
+    context = {'user': user, 'subject': subject,
+                'options' : options_available}
+    ci = RequestContext(request)            
+    return render_to_response('allotter/apply.html', context,
+                            context_instance=ci)
+        
