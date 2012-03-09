@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.http import Http404
 
 from allotter.models import Profile, Option, Exam
-from allotter.forms import RegistrationForm, UserLoginForm
+from allotter.forms import RegistrationForm, UserLoginForm#, ApplicationForm
 
 from settings import URL_ROOT
 
@@ -77,9 +77,16 @@ def apply(request):
     user_profile = user.get_profile()
     subject = user_profile.exam_code
     options_available = Option.objects.filter(exam__exam_name=subject).distinct()
+    #form = ApplicationForm(user)
     context = {'user': user, 'subject': subject,
                 'options' : options_available}
     ci = RequestContext(request)            
     return render_to_response('allotter/apply.html', context,
                             context_instance=ci)
+
+def submit(request):
+	pass
+
+def quit(request):
+	pass
         
