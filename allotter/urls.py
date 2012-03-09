@@ -6,5 +6,5 @@ urlpatterns = patterns('allotter.views',
     url(r'^register/$', 'user_register'),
     url(r'^apply/$', 'apply'),
 	url(r'^quit/$', 'quit'),
-	url(r'^save/$', 'save'),
+	url(r'^submit/$', 'submit'),
 )
