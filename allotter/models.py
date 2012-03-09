@@ -19,11 +19,13 @@ CATEGORIES = (
 AVAILABLE_OPTIONS = ( 
     ("MScChem", "M.Sc Chemisty"),
     ("MScPhy", "M.Sc Physics"),
-    ("MScMath","M.Sc Mathematics"))
+    ("MScMath","M.Sc Mathematics"),
+	("MscHist", "M.Sc History"),
+)
 
 GENDER_CHOICES = (
     ("M", "Male"),
-    ("F", "Female"))
+    ("F", "Female"),)
 
 APPLICATION_STATUS = (
     ("I", "Incomplete"),
@@ -58,7 +60,7 @@ class Option(models.Model):
 
     seats = models.IntegerField(verbose_name=u"Seats available")
 
-    exam = models.ManyToManyField(Exam, default=DEFAULT_EXAM_ID)
+    exam = models.ManyToManyField(Exam)
 
     class Meta:
         verbose_name_plural = "Options"
