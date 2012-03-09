@@ -10,14 +10,6 @@ from allotter.forms import RegistrationForm, UserLoginForm
 
 from settings import URL_ROOT
 
-def index(request):
-    """The start page.
-    """
-    user = request.user
-    if user.is_authenticated():
-        return redirect("/allotter/hello/")
-
-    return redirect("/allotter/login/")
 
 def user_register(request):
     """ Register a new user.
@@ -25,7 +17,7 @@ def user_register(request):
 
     user = request.user
     if user.is_authenticated():
-        return redirect("/allotter/hello/")
+        return redirect("/allotter/")
 
     if request.method == "POST":
         form = RegistrationForm(request.POST)
@@ -33,7 +25,9 @@ def user_register(request):
             data = form.cleaned_data
             u_name, pwd = form.save_data()
 
-            return redirect("/allotter/hello/")
+            new_user = authenticate(username = u_name, password = pwd)
+            login(request, new_user)
+            return redirect("/allotter/")
                 
         else:
             return render_to_response('allotter/register.html',
@@ -50,14 +44,14 @@ def user_login(request):
 
     user = request.user
     if user.is_authenticated():
-        return redirect("/allotter/hello/")
+        return redirect("/allotter/")
 
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
             user = form.cleaned_data
             login(request, user)
-            return redirect("/allotter/hello/")
+            return redirect("/allotter/")
         else:
             context = {"form": form}
             return render_to_response('allotter/login.html', context,

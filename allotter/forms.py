@@ -60,12 +60,6 @@ class RegistrationForm(forms.Form):
         except User.DoesNotExist:
             return u_name
 
-        
-    def clean_password(self):  
-        pwd = self.cleaned_data['password']
-        if pwd.strip(PWD_CHARS):
-            raise forms.ValidationError("Only letters, digits and punctuation \
-            are allowed in password")
 
     def clean_confirm_password(self):
         c_pwd = self.cleaned_data['confirm_password']
