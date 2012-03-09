@@ -63,13 +63,6 @@ def user_login(request):
                                      context_instance=RequestContext(request))
 
 @login_required
-def hello(request):
-    user = request.user
-    context = {'user': user}
-    ci = RequestContext(request)
-    return render_to_response('allotter/hello.html', context, 
-                                     context_instance=ci)
-@login_required
 def apply(request):
     user = request.user
     if not(user.is_authenticated()):
@@ -90,3 +83,6 @@ def submit(request):
 def quit(request):
 	pass
         
+def user_logout(request):
+    logout(request)
+    return redirect ('/allotter/')

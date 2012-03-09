@@ -3,6 +3,12 @@
 {% block title %}Application form {% endblock %}
 
 {% block content %}
+
+<h2>Hello, there</h2>
+
+<p> Welcome <strong>{{user.first_name.title}} {{user.last_name.title}}</strong>, 
+to JAM 2012 allotment! </p>
+
 Choose the options as per your preference
 
 <h3> {{user.first_name}} {{user.last_name}} {{user.user_name}}</h3>
@@ -24,4 +30,5 @@ Choose the options as per your preference
 <input type="submit" name="quit" value="Quit Allotment" />
 </form>
 
+<a href="{{URL_ROOT}}/allotter/logout/">Logout</a>
 {% endblock content %}
