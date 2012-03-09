@@ -76,7 +76,7 @@ def apply(request):
         return redirect('/allotter/login/')
     user_profile = user.get_profile()
     subject = user_profile.exam_code
-    options_available = Option.objects.filter(exam__exam_code=subject).distinct()
+    options_available = Option.objects.filter(exam__exam_name=subject).distinct()
     context = {'user': user, 'subject': subject,
                 'options' : options_available}
     ci = RequestContext(request)            

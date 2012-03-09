@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 from  datetime import datetime
 
 EXAMINATION_SUBJECTS = (
-    ("phy", "Physics"),
-    ("math", "Mathematics"),
-    ("chem", "Chemistry"),
+    ("Physics", "Physics"),
+    ("Mathematics", "Mathematics"),
+    ("Chemistry", "Chemistry"),
     )
 
 CATEGORIES = (
