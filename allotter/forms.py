@@ -44,7 +44,7 @@ class RegistrationForm(forms.Form):
     category = forms.ChoiceField(widget=forms.RadioSelect, choices=CATEGORIES)
     
     #Physical Disability
-    pd = forms.BooleanField()
+    pd = forms.BooleanField(required=False)
     
 
     def clean_username(self):
@@ -75,12 +75,11 @@ class RegistrationForm(forms.Form):
 
         return c_pwd
 
-	def save(self):
-		u_name = self.cleaned_data["username"]
-		pwd = self.cleaned_data["password"]
-		email = self.cleaned_data['email']
-		new_user = User.objects.create_user(u_name, email, pwd)
-
+    def save_data(self):
+        u_name = self.cleaned_data["username"]
+        pwd = self.cleaned_data["password"]
+        email = self.cleaned_data["email"]
+        new_user = User.objects.create_user(u_name, email, pwd)
         new_user.first_name = self.cleaned_data["first_name"]
         new_user.last_name = self.cleaned_data["last_name"]
         new_user.save()
@@ -95,6 +94,7 @@ class RegistrationForm(forms.Form):
         new_profile.save()
 
         return u_name, pwd
+
 
 class UserLoginForm(forms.Form):
     username = forms.IntegerField(help_text="Registration Number of Applicant")

@@ -156,3 +156,4 @@ LOGGING = {
 }
 
 AUTH_PROFILE_MODULE = "allotter.Profile"
+LOGIN_URL = '/allotter/login'

@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.shortcuts import render, redirect
 from django.template import RequestContext
@@ -30,11 +31,9 @@ def user_register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            u_name, pwd = form.save()
+            u_name, pwd = form.save_data()
 
-            new_user = authenticate(username = u_name, password = pwd)
-            login(request, new_user)
-            return redirect("allotter/hello/")
+            return redirect("/allotter/hello/")
                 
         else:
             return render_to_response('allotter/register.html',
@@ -69,13 +68,14 @@ def user_login(request):
         return render_to_response('allotter/login.html', context,
                                      context_instance=RequestContext(request))
 
+@login_required
 def hello(request):
     user = request.user
     context = {'user': user}
     ci = RequestContext(request)
     return render_to_response('allotter/hello.html', context, 
                                      context_instance=ci)
-
+@login_required
 def apply(request):
     user = request.user
     if not(user.is_authenticated()):

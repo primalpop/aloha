@@ -75,7 +75,7 @@ class Profile(models.Model):
         verbose_name=u"Examination Application number",
         help_text=u"Application number as per the Examination Hall ticket")
 
-    dob = models.DateTimeField(verbose_name=u"Date of Birth",
+    dob = models.DateField(verbose_name=u"Date of Birth",
         help_text=u"Date of birth as given in the application")
 
     category = models.CharField(max_length=30, choices=CATEGORIES)
