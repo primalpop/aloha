@@ -5,7 +5,7 @@
 {% block content %}
 Choose the options as per your preference
 
-<h3> {{user.first_name}} {{user.last_name}}</h3>
+<h3> {{user.first_name}} {{user.last_name}} {{user.user_name}}</h3>
 
 <h3> {{subject}} </h3>
 
@@ -13,7 +13,7 @@ Choose the options as per your preference
 {% csrf_token %}
 
 {% for option in options %} 
-<input name="option" type="check" value="{{option}}" />{{option.opt_name}}<br/>
+<input name="option" type="radio" value="{{option}}" />{{option.opt_name}}<br/>
 {% endfor %}
 
 <input type="submit" name="save" value="Save" />
