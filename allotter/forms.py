@@ -3,106 +3,86 @@ from django import forms
 from allotter.models import Profile
 from django.forms.extras.widgets import SelectDateWidget
 
+from django.utils.encoding import *
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from string import digits, letters, punctuation
+from string import digits
 
-from allotter.models import BIRTH_YEAR_CHOICES, GENDER_CHOICES, EXAMINATION_SUBJECTS, CATEGORIES
+BIRTH_YEAR_CHOICES = ('1986','1987','1988','1989','1990','1991')
 
-from allotter.models import Option
 
-PWD_CHARS = letters + punctuation + digits
-
-class RegistrationForm(forms.Form):
-    #5 Digit Registration Number would be used as username
-    username = forms.IntegerField(help_text="Enter your Registration Number")
+class UserLoginForm(forms.Form):
     
-    password = forms.CharField(max_length=30,
-        widget=forms.PasswordInput())
+    ##Registration Number as Username
+    u_name = forms.IntegerField(label="Registration Number", 
+             help_text="As on your Examination ID Card")
+ 
+    ##Application number as password    
+    password = forms.CharField(label = "Application Number", 
+             max_length=10, help_text="As on your Examination ID Card")
     
-    confirm_password = forms.CharField(max_length=30,
-        widget=forms.PasswordInput())
-
-    email = forms.EmailField()
-
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    
-    app_no = forms.IntegerField(help_text="Enter your Application Number")
-
-    exam_code = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-        choices=EXAMINATION_SUBJECTS,
-        help_text="Options available depends on the qualified Exam")
-   
-    #All India Rank
-    air = forms.DecimalField(help_text="All India Rank")
-    
-    dob = forms.DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
-    
-    gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDER_CHOICES)
-    category = forms.ChoiceField(widget=forms.RadioSelect, choices=CATEGORIES)
-    
-    #Physical Disability
-    pd = forms.BooleanField(required=False)
-    
+    dob = forms.DateField(label="Date of Birth", widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
 
     def clean_username(self):
         u_name = self.cleaned_data["username"]
-        
+
+        ##Verifies whether username contains only digits and is not 
+        ##longer than 7, i.e Username == Registration Number.
         if str(u_name).strip(digits) and len(u_name) != 7:
             msg = "Not a valid Registration Number"
             raise forms.ValidationError(msg)
 
+        ##Verifying whether the user already exists in the database
+        ##Raising error otherwise
         try:
             User.objects.get(username__exact = u_name)
-            raise forms.ValidationError("Registration Number already exists.")
-        except User.DoesNotExist:
             return u_name
+        except User.DoesNotExist:
+            raise forms.ValidationError("Registration Number doesn't exist.")
 
+    def clean_password(self):
+        pwd = self.cleaned_data['password']
+        
+        ##Verifying the length of application number and whether it contains
+        ##only digits.
 
-    def clean_confirm_password(self):
-        c_pwd = self.cleaned_data['confirm_password']
-        pwd = self.data['password']
-        if c_pwd != pwd:
-            raise forms.ValidationError("Passwords do not match")
+        if str(pwd).strip(digits) and len(pwd) != 5:
+            msg = "Not a valid Application Number"
+            raise forms.ValidationError(msg)    
+        
+        ##TODO: Implement the following
+        ##Checking if the Application number exists in the database. Hashing it 
+        ##and checking if the hash value exists.
+        ##try:
+        ##
+        ##except DoesNotExist
 
-        return c_pwd
+    def clean_dob(self):
+        dob = self.cleaned_data['dob']
 
-    def save_data(self):
-        u_name = self.cleaned_data["username"]
-        pwd = self.cleaned_data["password"]
-        email = self.cleaned_data["email"]
-        new_user = User.objects.create_user(u_name, email, pwd)
-        new_user.first_name = self.cleaned_data["first_name"]
-        new_user.last_name = self.cleaned_data["last_name"]
-        new_user.save()
-        cleaned_data = self.cleaned_data
-        new_profile = Profile(user=new_user)
-        new_profile.exam_code = cleaned_data["exam_code"]
-        new_profile.gender = cleaned_data["gender"]
-        new_profile.rank = cleaned_data["air"]
-        new_profile.category = cleaned_data["category"]
-        new_profile.dob = cleaned_data["dob"]
-        new_profile.application_number = cleaned_data["app_no"]
-        new_profile.save()
+        ##Getting the profile of user and verifying the entered DoB against
+        ##the DoB stored in Profile.
+        try:
+            user = User.objects.get(username__exact = u_name)
+            profile = user.get_profile()
+            if profile.dob == dob:
+                return dob
+        except User.DoesNotExist:
+            raise forms.ValidationError("Registration Number doesn't exist.")
 
-        return u_name, pwd
-
-
-class UserLoginForm(forms.Form):
-    username = forms.IntegerField(help_text="Registration Number of Applicant")
-    password = forms.CharField(max_length=30, widget=forms.PasswordInput(), 
-        help_text="Keep it safe")
+        raise forms.ValidationError("Date of Birth doesn't match.")
+        
 
     def clean(self):
         super(UserLoginForm, self).clean()
+        ##TODO: Should the is_clean method be called on the form explicitly?
         u_name, pwd = self.cleaned_data["username"], self.cleaned_data["password"]
         user = authenticate(username = u_name, password = pwd)
 
         if not user:
             raise forms.ValidationError("Invalid username/password")
-
         return user
 
 
