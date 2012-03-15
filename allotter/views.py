@@ -6,14 +6,35 @@ from django.template import RequestContext
 from django.http import Http404
 
 from allotter.models import Profile, Option, Exam
-from allotter.forms import RegistrationForm, UserLoginForm#, ApplicationForm
+from allotter.forms import UserLoginForm
 
-from settings import URL_ROOT
+def user_login(request):
 
+    """Take the credentials of the user and log the user in."""
 
-def user_register(request):
-    """ Register a new user.
-    Create a user and corresponding profile and store roll_number also."""
+    user = request.user
+    if user.is_authenticated():
+        return redirect("/allotter/")
+
+    if request.method == "POST":
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data
+            login(request, user)
+            return redirect("/allotter/")
+        else:
+            context = {"form": form}
+            return render_to_response('allotter/login.html', context,
+                        context_instance=RequestContext(request))
+    else:
+        form = UserLoginForm()
+        context = {"form": form}
+        return render_to_response('allotter/login.html', context,
+                                     context_instance=RequestContext(request))
+
+"""def user_register(request):
+     Register a new user.
+    Create a user and corresponding profile and store roll_number also.
 
     user = request.user
     if user.is_authenticated():
@@ -39,30 +60,9 @@ def user_register(request):
                 {'form':form},
                 context_instance=RequestContext(request))
 
-def user_login(request):
-    """Take the credentials of the user and log the user in."""
+"""
 
-    user = request.user
-    if user.is_authenticated():
-        return redirect("/allotter/")
-
-    if request.method == "POST":
-        form = UserLoginForm(request.POST)
-        if form.is_valid():
-            user = form.cleaned_data
-            login(request, user)
-            return redirect("/allotter/")
-        else:
-            context = {"form": form}
-            return render_to_response('allotter/login.html', context,
-                        context_instance=RequestContext(request))
-    else:
-        form = UserLoginForm()
-        context = {"form": form}
-        return render_to_response('allotter/login.html', context,
-                                     context_instance=RequestContext(request))
-
-@login_required
+"""@login_required
 def apply(request):
     user = request.user
     if not(user.is_authenticated()):
@@ -70,7 +70,7 @@ def apply(request):
     user_profile = user.get_profile()
     subject = user_profile.exam_code
     options_available = Option.objects.filter(exam__exam_name=subject).distinct()
-    #form = ApplicationForm(user)
+    #form = ApplicationForm(logged_user=user)
     context = {'user': user, 'subject': subject,
                 'options' : options_available}
     ci = RequestContext(request)            
@@ -85,4 +85,4 @@ def quit(request):
         
 def user_logout(request):
     logout(request)
-    return redirect ('/allotter/')
+    return redirect ('/allotter/')"""
