@@ -94,7 +94,7 @@ class Application(models.Model):
     profile = models.ForeignKey(Profile)
 
     ##To be filled by applicant
-    options_selected = models.CharField(max_length=5000,help_text="CSV formatted list of options")
+    options_selected = models.CharField(max_length=5000,help_text="CSV formatted list of options", blank=True)
 
 	##Prefilled fields
     np = models.IntegerField(max_length=2, help_text="Number of Test Papers")
