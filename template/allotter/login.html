@@ -3,8 +3,8 @@
 {% block title %}Login{% endblock title %}
 
 {% block content %}
-<p> Welcome to the Allotment.
-Please login to proceed.</p>
+<h2> Welcome to the Allotment.
+Please login to proceed.</h2>
 
 <form action="" method="post">
 {% csrf_token %}
@@ -13,8 +13,9 @@ Please login to proceed.</p>
 {{ form.as_table }}
 </table>
 
+<br/>
 <input type="submit" value="Login" />
 </form>
 <!-- <a href="{{URL_ROOT}}/exam/forgotpassword/">Forgot Password</a> <br /> -->
-<a href="{{URL_ROOT}}/allotter/register/">New User Registration</a> 
+
 {% endblock content %}
