@@ -59,15 +59,14 @@ class UserLoginForm(forms.Form):
         u_name, pwd = self.cleaned_data.get('username'), self.cleaned_data.get('password')
         dob = self.cleaned_data['dob']
         try:
-            user = User.objects.get(username__exact = u_name)
-            profile = user.get_profile()
-            if profile.dob == dob:
-                return dob
+            current_user = User.objects.get(username__exact = u_name)
+            profile = current_user.get_profile()
+            if profile.dob != dob:
+                raise forms.ValidationError("Date of Birth doesn't match.")
         except User.DoesNotExist:
             raise forms.ValidationError("Verify the details entered.")
 
-        raise forms.ValidationError("Date of Birth doesn't match.")
-        
+      
         ##Authentication part
         user = authenticate(username = u_name, password = pwd)
         if not user:
