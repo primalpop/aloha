@@ -1,6 +1,11 @@
 
+allotter/migrations/
 *~
 *.pyc
 jam
 .project
 .pydevproject
+*.csv
+*.png
+*.txt
+*.json
