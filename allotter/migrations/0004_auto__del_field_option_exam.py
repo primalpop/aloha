@@ -8,21 +8,8 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'Exam'
-        db.create_table('allotter_exam', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('exam_code', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('exam_name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-        ))
-        db.send_create_signal('allotter', ['Exam'])
-
-        # Adding model 'Option'
-        db.create_table('allotter_option', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('opt_name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('seats', self.gf('django.db.models.fields.IntegerField')()),
-        ))
-        db.send_create_signal('allotter', ['Option'])
+        # Deleting field 'Option.exam'
+        db.delete_column('allotter_option', 'exam')
 
         # Adding M2M table for field exam on 'Option'
         db.create_table('allotter_option_exam', (
@@ -32,69 +19,14 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('allotter_option_exam', ['option_id', 'exam_id'])
 
-        # Adding model 'Profile'
-        db.create_table('allotter_profile', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
-            ('application_number', self.gf('django.db.models.fields.IntegerField')(max_length=20)),
-            ('dob', self.gf('django.db.models.fields.DateField')()),
-            ('category', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('rank', self.gf('django.db.models.fields.IntegerField')(max_length=6)),
-            ('gender', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('pd', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('allotter', ['Profile'])
-
-        # Adding M2M table for field exam_code on 'Profile'
-        db.create_table('allotter_profile_exam_code', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('profile', models.ForeignKey(orm['allotter.profile'], null=False)),
-            ('option', models.ForeignKey(orm['allotter.option'], null=False))
-        ))
-        db.create_unique('allotter_profile_exam_code', ['profile_id', 'option_id'])
-
-        # Adding model 'Application'
-        db.create_table('allotter_application', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['allotter.Profile'])),
-            ('exam_taken', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['allotter.Exam'])),
-            ('status', self.gf('django.db.models.fields.CharField')(max_length=24)),
-            ('editable', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal('allotter', ['Application'])
-
-        # Adding M2M table for field options on 'Application'
-        db.create_table('allotter_application_options', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('application', models.ForeignKey(orm['allotter.application'], null=False)),
-            ('option', models.ForeignKey(orm['allotter.option'], null=False))
-        ))
-        db.create_unique('allotter_application_options', ['application_id', 'option_id'])
-
 
     def backwards(self, orm):
         
-        # Deleting model 'Exam'
-        db.delete_table('allotter_exam')
-
-        # Deleting model 'Option'
-        db.delete_table('allotter_option')
+        # Adding field 'Option.exam'
+        db.add_column('allotter_option', 'exam', self.gf('django.db.models.fields.CharField')(default='', max_length=30), keep_default=False)
 
         # Removing M2M table for field exam on 'Option'
         db.delete_table('allotter_option_exam')
-
-        # Deleting model 'Profile'
-        db.delete_table('allotter_profile')
-
-        # Removing M2M table for field exam_code on 'Profile'
-        db.delete_table('allotter_profile_exam_code')
-
-        # Deleting model 'Application'
-        db.delete_table('allotter_application')
-
-        # Removing M2M table for field options on 'Application'
-        db.delete_table('allotter_application_options')
 
 
     models = {
@@ -126,7 +58,7 @@ class Migration(SchemaMigration):
             'application_number': ('django.db.models.fields.IntegerField', [], {'max_length': '20'}),
             'category': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'dob': ('django.db.models.fields.DateField', [], {}),
-            'exam_code': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['allotter.Option']", 'symmetrical': 'False'}),
+            'exam_code': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'gender': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'pd': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
