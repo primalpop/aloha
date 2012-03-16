@@ -74,25 +74,11 @@ class Option(models.Model):
         return self.opt_name
 
 
-class Profile(models.Model):
-
-    user = models.OneToOneField(User)
-
-	#Used for verification purposes
-    dob = models.DateField(verbose_name=u"Date of Birth",
-        help_text=u"Date of birth as given in the application")
-	
-    def __unicode__(self):
-        u = self.user
-        return u'User Profile {0} {1}'.format(u.first_name, u.last_name)
-
 class Application(models.Model):
     """An application for the student - one per student
     """
-    user = models.ForeignKey(User)
-	
-    profile = models.ForeignKey(Profile)
-
+    user = models.OneToOneField(User)
+    
     ##To be filled by applicant
     options_selected = models.CharField(max_length=5000,help_text="CSV formatted list of options", blank=True)
 
@@ -118,4 +104,21 @@ class Application(models.Model):
     def __unicode__(self):
         u = self.user
         return u'Application for {0} {1}'.format(u.first_name, u.last_name)
+
+class Profile(models.Model):
+
+    user = models.OneToOneField(User)
+
+	#Used for verification purposes
+    dob = models.DateField(verbose_name=u"Date of Birth",
+        help_text=u"Date of birth as given in the application")
+    
+    #Application for the Profile    
+    application = models.ForeignKey(Application)
+	
+    def __unicode__(self):
+        u = self.user
+        return u'User Profile {0} {1}'.format(u.first_name, u.last_name)
+
+
 
