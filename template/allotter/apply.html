@@ -1,34 +1,77 @@
 {% extends "base.html" %}
 
+{% load range_filter %}
+
 {% block title %}Application form {% endblock %}
 
 {% block content %}
 
-<h2>Hello, there</h2>
+<h2>Thank you for providing the details. You have been authenticated.</h2>
 
 <p> Welcome <strong>{{user.first_name.title}} {{user.last_name.title}}</strong>, 
 to JAM 2012 allotment! </p>
 
 Choose the options as per your preference
 
-<h3> {{user.first_name}} {{user.last_name}} {{user.user_name}}</h3>
+<h3>You are in the merit list for {{first_paper}} 
 
-<h3> {{subject}} </h3>
+{% comment %}
+Checking if there is second paper and displaying its name.
+{% endcomment %}
+
+{% if np == 2  %}
+
+and {{second_paper}}
+
+{% endif %}
+
+</h3>
+
+<h4>For the paper(s) in which you are in the merit list, the following
+options are available to you. Please rank your choices.</h4>
+
+<p> Options will be given preference in the ascending order. Make sure it's 
+<b>None</b> for all options after your last option so that it is not considered. </p>
+
+<h3>Number of Options {{ oafl }} Number of subjects {{np}} </h3>
+
+{% comment %}
+Listing the options for first test paper.
+{% endcomment %}
 
 <form action="/allotter/save" method="post">
 {% csrf_token %}
 
-{% for option in options %} 
-<input name="option" type="radio" value="{{option}}" />{{option.opt_name}}<br/>
+{% for option in options_available_first %} 
+    <p>{{ option.opt_name }}</p>
+    {% for i in oafl|get_range %}
+        <input name="option" type="radio" value="{{i}}" />{{i}}<br/>
+    {% endfor %}
+    <input name="option" type="radio" value="None" />None<br/>
 {% endfor %}
+
+{% comment %}
+Listing the options for second test paper if it exists.
+{% endcomment %}
+
+{% if np == 2  %}
+
+{% for option in options_available_second %} 
+    <p>{{ option.opt_name }}</p>
+    {% for i in oafl|get_range %}
+        <input name="option" type="radio" value="{{i}}" />{{i}}<br/>
+    {% endfor %}
+    <input name="option" type="radio" value="None" />None<br/>
+{% endfor %}
+
+{% endif %}
 
 <input type="submit" name="save" value="Save" />
 </form>
 
-<form action="/allotter/quit/" method="post">
+<form action="/allotter/logout/" method="post">
 {% csrf_token %}
-<input type="submit" name="quit" value="Quit Allotment" />
+<input type="submit" name="logout" value="Quit Allotment" />
 </form>
 
-<a href="{{URL_ROOT}}/allotter/logout/">Logout</a>
 {% endblock content %}

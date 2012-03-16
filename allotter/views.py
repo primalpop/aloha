@@ -31,6 +31,52 @@ def user_login(request):
         context = {"form": form}
         return render_to_response('allotter/login.html', context,
                                      context_instance=RequestContext(request))
+                                     
+                                     
+@login_required
+def apply(request):
+    user = request.user
+    if not(user.is_authenticated()):
+        return redirect('/allotter/login/')
+    user_profile = user.get_profile()
+    user_application = user_profile.application
+    np = user_application.np #Number of Papers
+    first_paper = user_application.first_paper
+    options_available_first = Option.objects.filter(exam__exam_name=first_paper).distinct()
+    oafl = len(options_available_first) 
+    if np == 2:
+        second_paper = user_application.second_paper
+        options_available_second = Option.objects.filter(exam__exam_name=second_paper).distinct()
+        oasl = len(options_available_second)
+        context = {'user': user, 'first_paper': first_paper,
+            'options_available_first' : options_available_first,'np' : np,
+            'oafl': oafl, 'oasl': oasl, 'second_paper': second_paper, 
+            'options_available_second' : options_available_second}    
+        ci = RequestContext(request)            
+        return render_to_response('allotter/apply.html', context,
+                            context_instance=ci)
+        
+    #form = ApplicationForm(logged_user=user)
+    context = {'user': user, 'first_paper': first_paper,
+            'options_available_first' : options_available_first,
+            'oafl': oafl, 'np' : np}
+    ci = RequestContext(request)            
+    return render_to_response('allotter/apply.html', context,
+                            context_instance=ci)
+                            
+                            
+"""
+def submit(request):
+	pass
+
+def quit(request):
+	pass
+        
+def user_logout(request):
+    logout(request)
+    return redirect ('/allotter/')
+    
+"""    
 
 """def user_register(request):
      Register a new user.
@@ -62,27 +108,3 @@ def user_login(request):
 
 """
 
-"""@login_required
-def apply(request):
-    user = request.user
-    if not(user.is_authenticated()):
-        return redirect('/allotter/login/')
-    user_profile = user.get_profile()
-    subject = user_profile.exam_code
-    options_available = Option.objects.filter(exam__exam_name=subject).distinct()
-    #form = ApplicationForm(logged_user=user)
-    context = {'user': user, 'subject': subject,
-                'options' : options_available}
-    ci = RequestContext(request)            
-    return render_to_response('allotter/apply.html', context,
-                            context_instance=ci)
-
-def submit(request):
-	pass
-
-def quit(request):
-	pass
-        
-def user_logout(request):
-    logout(request)
-    return redirect ('/allotter/')"""
