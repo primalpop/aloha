@@ -39,32 +39,36 @@ options are available to you. Please rank your choices.</h4>
 Listing the options for first test paper.
 {% endcomment %}
 
-<form action="/allotter/save" method="post">
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="/allotter/{{user.username}}/submit/" method="post">
 {% csrf_token %}
 
 {% for option in options_available_first %} 
     <p>{{ option.opt_name }}</p>
     {% for i in oafl|get_range %}
-        <input name="option" type="radio" value="{{i}}" />{{i}}<br/>
+        <input name="{{option.opt_name}}" type="radio" value="{{option.id}}" /><br/>
     {% endfor %}
-    <input name="option" type="radio" value="None" />None<br/>
+    <input name="{{option.opt_name}}" type="radio" value="None" />None<br/>
 {% endfor %}
 
 {% comment %}
 Listing the options for second test paper if it exists.
 {% endcomment %}
 
+
 {% if np == 2  %}
 
 {% for option in options_available_second %} 
     <p>{{ option.opt_name }}</p>
     {% for i in oafl|get_range %}
-        <input name="option" type="radio" value="{{i}}" />{{i}}<br/>
+        <input name="option" type="radio" value="{{i}}"/><br/>
     {% endfor %}
     <input name="option" type="radio" value="None" />None<br/>
-{% endfor %}
+{% endfor %} 
 
 {% endif %}
+
 
 <input type="submit" name="save" value="Save" />
 </form>
