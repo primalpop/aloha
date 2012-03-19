@@ -103,7 +103,7 @@ class Application(models.Model):
 
     def __unicode__(self):
         u = self.user
-        return u'Application for {0} {1}'.format(u.first_name, u.last_name)
+        return u'Application for {0}'.format(u.username)
 
 class Profile(models.Model):
 
@@ -118,7 +118,7 @@ class Profile(models.Model):
 	
     def __unicode__(self):
         u = self.user
-        return u'User Profile {0} {1}'.format(u.first_name, u.last_name)
+        return u'User Profile {0}'.format(u.username)
 
 
 
