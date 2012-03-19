@@ -56,20 +56,19 @@ Listing the options for first test paper.
 Listing the options for second test paper if it exists.
 {% endcomment %}
 
-{% comment %}
+
 {% if np == 2  %}
 
 {% for option in options_available_second %} 
     <p>{{ option.opt_name }}</p>
     {% for i in oafl|get_range %}
-        <input name="option" type="radio" value="{{i}}" />{{i}}<br/>
+        <input name="option" type="radio" value="{{i}}"/><br/>
     {% endfor %}
     <input name="option" type="radio" value="None" />None<br/>
 {% endfor %} 
 
 {% endif %}
 
-{% endcomment %}
 
 <input type="submit" name="save" value="Save" />
 </form>

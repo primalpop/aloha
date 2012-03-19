@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.http import Http404
+
 #TODO: Remove this if possible
 from django.http import HttpResponseRedirect 
 from django.core.urlresolvers import reverse
@@ -123,7 +124,7 @@ def submit(request, reg_no):
     user_application.options_selected += options_list   
     user_application.save()
     return HttpResponseRedirect(reverse('allotter.views.complete', args=(reg_no,)))
-    return redirect('/allotter/complete/')
+    #return redirect('/allotter/complete/')
     
 #User Application
 
