@@ -120,6 +120,12 @@ class Profile(models.Model):
 	#Used for verification purposes
     dob = models.DateField(verbose_name=u"Date of Birth",
         help_text=u"Date of birth as given in the application")
+        
+    secondary_email = models.EmailField(verbose_name=u"Secondary Email",
+        help_text=u"Email address read from user after authentication")
+        
+    phone_number = models.IntegerField(max_length=10, verbose_name="Phone Number",
+        help_text=u"Phone number read from user after authentication")
     
     #Application for the Profile    
     application = models.ForeignKey(Application)
