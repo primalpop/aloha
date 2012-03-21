@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#email in profile
+#course - place
+#phone no(2)
+
 ##EXAMINATION_SUBJECTS = (
 ##    ("Physics", "Physics"),
 ##    ("Mathematics", "Mathematics"),
@@ -64,6 +68,10 @@ class Option(models.Model):
 	
     opt_code = models.IntegerField(max_length=3, 
 		verbose_name=u"Programme Code")
+		
+    opt_location = models.CharField(max_length=30, 
+	    verbose_name=u"Programme Location",
+	    help_text=u"Offered by which IIT")	
 
     exam = models.ManyToManyField(Exam)
 

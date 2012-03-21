@@ -23,10 +23,15 @@ class UserLoginForm(forms.Form):
     password = forms.CharField(label = "Application Number", 
              max_length=10, help_text="As on your Examination ID Card")
     
-    dob = forms.DateField(label="Date of Birth", widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+    dob = forms.DateField(label="Date of Birth", 
+            widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES),
+            initial=datetime.date.today)
 
     def clean_username(self):
         u_name = self.cleaned_data["username"]
+        
+        if not u_name:
+            raise forms.ValidationError("Enter an username.")    
         
         ##Verifies whether username contains only digits and is not 
         ##longer than 7, i.e Username == Registration Number.
@@ -43,6 +48,7 @@ class UserLoginForm(forms.Form):
             raise forms.ValidationError("Entered Registration Number haven't appeared for JAM Exam.")
 
     def clean_password(self):
+    
         pwd = self.cleaned_data['password']
         
         ##Verifying the length of application number and whether it contains
@@ -64,13 +70,13 @@ class UserLoginForm(forms.Form):
             if profile.dob != dob:
                 raise forms.ValidationError("Date of Birth doesn't match.")
         except User.DoesNotExist:
-            raise forms.ValidationError("Verify the details entered.")
+            raise forms.ValidationError("Correct the following errors and try logging in again.")
 
       
         ##Authentication part
         user = authenticate(username = u_name, password = pwd)
         if not user:
-            raise forms.ValidationError("Invalid username/password")
+            raise forms.ValidationError("Application Number or Registration Number doesn't match.")
         return user
 
 

@@ -72,12 +72,14 @@ def get_details(user, error_message = ""):
             'options_available_first' : options_available_first, 
             'second_paper': second_paper, 
             'options_available_second' : options_available_second,
-            'np' : np,'oafl': oafl, 'oasl': oasl,
+            'np' : np, 'oafl_range': range(1, oafl + 1, 1), 
+            'oasl_range': range(oafl, oafl + oasl, 1),
             'error_message': error_message}    
     else: #If written only one exam
         context = {'user': user, 'first_paper': first_paper,
             'options_available_first' : options_available_first,
-            'oafl': oafl, 'np' : np, 'error_message' : error_message}     
+            'oafl_range': range(1, oafl + 1, 1), 
+            'np' : np, 'error_message' : error_message}     
     return context              
                                      
 @login_required
@@ -110,7 +112,7 @@ def submit(request, reg_no):
     for option in options_available_first:   
         
         #TODO: Dealing with none option, Dealing with all nones
-        selected_option = Option.objects.get(pk=request.POST[option.opt_name])           
+        option_pref = request.POST[option.opt_name]           
         #except (KeyError, Option.DoesNotExist):
             # Redisplay the application form with error message.
         #    error_message = "You didn't select a choice."
@@ -119,8 +121,8 @@ def submit(request, reg_no):
         #        context_instance=RequestContext(request))
         #else:
         
-        options_list += selected_option.opt_name
-        
+        options_list += option_pref + "-" + str(option.opt_code) + ","
+     
     user_application.options_selected += options_list   
     user_application.save()
     return HttpResponseRedirect(reverse('allotter.views.complete', args=(reg_no,)))
@@ -129,10 +131,16 @@ def submit(request, reg_no):
 #User Application
 
 def complete(request, reg_no):
-    
-    context = {'user': reg_no}
+    user = get_object_or_404(User, username=reg_no)
+    email = user.email
+    user_profile = user.get_profile()
+    user_application = user_profile.application
+    first_paper = user_application.first_paper #First Paper Name
+    options_available_first = Option.objects.filter(exam__exam_name=first_paper).distinct() #Options for First paper
+    context = {'user': reg_no, 'email': email, 'first_paper': first_paper, 
+                'options_available_first': options_available_first}
     ci = RequestContext(request)          
-    return render_to_response('allotter/complete.html', context)
+    return render_to_response('allotter/complete.html', context, context_instance=ci)
 
 """def quit(request):
 	pass

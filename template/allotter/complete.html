@@ -5,7 +5,19 @@
 
 {% block content %}
 
-<h2> Thank you, your options have been saved to the database </h2>
+<h2> Thank you, your following options have been saved to the database </h2>
+
+{{first_paper}}
+
+{% for option in options_available_first %}
+    <p>{{ option.opt_name }}</p>
+{% endfor %}
+
+{% if email %}
+
+An email with all the options has been to the following email address: {{email}}
+
+{% endif %}
 
 {% endblock content %}
 
