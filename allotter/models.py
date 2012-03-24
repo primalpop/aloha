@@ -1,10 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-#email in profile
-#course - place
-#phone no(2)
-
 ##EXAMINATION_SUBJECTS = (
 ##    ("Physics", "Physics"),
 ##    ("Mathematics", "Mathematics"),
@@ -79,7 +75,7 @@ class Option(models.Model):
         verbose_name_plural = "Options"
         
     def __unicode__(self):
-        return self.opt_name
+        return unicode(self.opt_code)
 
 
 class Application(models.Model):
@@ -108,6 +104,8 @@ class Application(models.Model):
     cgy = models.CharField(max_length=10, verbose_name="Category")
 
     pd = models.BooleanField(verbose_name="Physical Disability", default=False, blank=True)
+    
+    submitted = models.BooleanField(verbose_name="Submission Status", default=False)
 
     def __unicode__(self):
         u = self.user
