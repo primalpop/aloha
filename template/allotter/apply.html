@@ -2,7 +2,7 @@
 
 {% load range_filter %}
 
-{% block title %} Application form {% endblock %}
+{% block title %} JAM 2012 Application form {% endblock %}
 
 {% block content %}
 
@@ -60,11 +60,11 @@ Listing the options for first test paper.
     <td><p> {{ option.opt_code }} </p></td>
     <td><p> {{option.opt_name }} </p></td>
     <td><p> {{option.opt_location }} </p></td>
-    <td><select name="{{option.opt_name}}">
-    {% for i in oafl_range %}
+    <td><select name="{{option.opt_code}}">
+    {% for i in options_range %}
         <option value="{{i}}" selected="selected">Preference {{i}}</option>
     {% endfor %}
-    <option value="{{option.opt_code}}">None</option>
+    <option value="0" selected="selected">None</option>
     </select>
     </td>
     </tr>                
@@ -88,11 +88,11 @@ Listing the options for first test paper.
     <td><p> {{option.opt_code }} </p></td>
     <td><p> {{option.opt_name }} </p></td>
     <td><p> {{option.opt_location }} </p></td>
-    <td><select name="{{option.opt_name}}">
-    {% for i in oasl_range %}
+    <td><select name="{{option.opt_code}}">
+    {% for i in options_range %}
         <option value="{{i}}" selected="selected">Preference {{i}}</option>
     {% endfor %}
-    <option value="{{option.opt_code}}">None</option>
+    <option value="0" selected="selected">None</option>
     </select>
     </td>
     </tr>                
@@ -101,12 +101,9 @@ Listing the options for first test paper.
 
 {% endif %}
 
+<p><label for="check">I am responsible for my own choices.</label> 
+<input type="checkbox" name="check" id="check" /></p>
 <input type="submit" name="save" value="Save" />
-</form>
-
-<form action="/allotter/logout/" method="post">
-{% csrf_token %}
-<input type="submit" name="logout" value="Quit Allotment" />
 </form>
 
 {% endblock content %}
