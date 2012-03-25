@@ -10,6 +10,11 @@ ADMINS = (
      ('Primal Pappachan', 'primal@fossee.in'),
 )
 
+AUTHORS = (
+     ('Primal Pappachan', 'primal@fossee.in'),
+     ('Parth Buch', 'parth@fossee.in'),
+)
+
 MANAGERS = ADMINS
 
 DATABASES = {
