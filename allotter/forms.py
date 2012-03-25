@@ -1,4 +1,3 @@
-
 from django import forms
 from allotter.models import Profile
 from django.forms.extras.widgets import SelectDateWidget
@@ -7,6 +6,8 @@ from django.utils.encoding import *
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 
 from string import digits
 
@@ -24,7 +25,7 @@ class UserLoginForm(forms.Form):
              max_length=10, help_text="As on your Examination ID Card")
     
     dob = forms.DateField(label="Date of Birth", 
-            widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES),
+            widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES, attrs={"class":"span1"}),
             initial=datetime.date.today)
 
     def clean_username(self):
@@ -78,6 +79,15 @@ class UserLoginForm(forms.Form):
         if not user:
             raise forms.ValidationError("Application Number or Registration Number doesn't match.")
         return user
+        
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-loginform'
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_action = " "
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(UserLoginForm, self).__init__(*args, **kwargs)
 
 
 class UserDetailsForm(forms.Form):
