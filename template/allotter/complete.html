@@ -5,19 +5,56 @@
 
 {% block content %}
 
-<h2> Thank you, your following options have been saved to the database </h2>
+<h2> The following options have been saved. Please verify them before logging out.</h2>
 
-{{first_paper}}
+<h3> Please keep in mind that, the next time you login you will be redirected to this page straightaway.</h3>
 
-{% for option in options_available_first %}
-    <p>{{ option.opt_name }}</p>
+{% if options_chosen %}
+<table>
+<tr>
+<td><p>Programme Code </p></td>
+<td><p>Programme Name </p></td>
+<td><p>Insitute </p></td>
+<td><p>Preference </p></td>
+</tr>
+
+{% for option in options_chosen %}
+    <tr> 
+    <td><p> {{ forloop.counter }} </p></td>
+    <td><p> {{ option.opt_code }} </p></td>
+    <td><p> {{ option.opt_name }} </p></td>
+    <td><p> {{ option.opt_location }} </p></td>
+    </tr>
 {% endfor %}
+
+</table>
 
 {% if email %}
 
-An email with all the options has been to the following email address: {{email}}
+An email with the list of options has been sent {{ email }} for book-keeping purposes.
 
 {% endif %}
+
+{% else %}
+
+<h3> No Options were chosen, Press Edit Options to go back and select options otherwise Press logout to exit the allotment process </h3>
+
+{% endif %}
+
+<form action="/allotter/apply/" method="post">
+{% csrf_token %}
+<input type="submit" name="apply" value="Edit Options" />
+</form>
+
+<form action="/allotter/get_pdf/" method="post">
+{% csrf_token %}
+<input type="submit" name="get_pdf" value="Generate PDF" />
+</form>
+
+<form action="/allotter/logout/" method="post">
+{% csrf_token %}
+<input type="submit" name="logout" value="Quit Allotment" />
+</form>
 
 {% endblock content %}
 

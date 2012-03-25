@@ -80,3 +80,31 @@ class UserLoginForm(forms.Form):
         return user
 
 
+class UserDetailsForm(forms.Form):
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserDetailsForm, self).__init__(*args, **kwargs)
+
+    email = forms.EmailField(label="Email Address", 
+                help_text="Enter a valid email id if you have any.")
+    phone_number = forms.IntegerField(label="Phone number",
+                help_text="10 digit number with code")
+    
+    
+    def clean_phone_number(self):
+        pno = self.cleaned_data['phone_number']
+        if str(pno).strip(digits) or len(str(pno)) != 10:
+            raise forms.ValidationError("Not a valid phone number")
+        return pno  
+        
+    def save(self):  
+        cleaned_data = self.cleaned_data
+        user_profile = self.user.get_profile()
+        
+        user_profile.secondary_email = self.cleaned_data['email']
+        user_profile.phone_number = self.cleaned_data['phone_number']
+
+        user_profile.save()
+        
+        
