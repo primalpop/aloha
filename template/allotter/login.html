@@ -1,21 +1,16 @@
 {% extends "base.html" %}
 
+
 {% block title %}Login{% endblock title %}
 
 {% block content %}
-<h2> Welcome to the Allotment.
-Please login to proceed.</h2>
+<h2> Welcome to the JAM 2012 Allotment</h2>
+<h2>Please fill in the required details to continue</h2>
+<hr>
 
-<form action="" method="post">
-{% csrf_token %}
-
-<table>
-{{ form.as_table }}
-</table>
-
-<br/>
-<input type="submit" value="Login" />
-</form>
+{% load crispy_forms_tags %}
+{% crispy form %}
 <!-- <a href="{{URL_ROOT}}/exam/forgotpassword/">Forgot Password</a> <br /> -->
 
 {% endblock content %}
+

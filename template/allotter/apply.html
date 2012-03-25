@@ -47,14 +47,15 @@ Listing the options for first test paper.
 <form action="/allotter/{{user.username}}/submit/" method="post">
 {% csrf_token %}
 
-<table>
-<tr>
+<table class="table table-bordered table-striped ">
+<thead>
 <td><p>Programme Code </p></td>
 <td><p>Programme Name </p></td>
 <td><p>Insitute </p></td>
 <td><p>Preference </p></td>
-</tr>
+</thead>
 
+<tbody>
 {% for option in options_available_first %}     
     <tr> 
     <td><p> {{ option.opt_code }} </p></td>
@@ -69,6 +70,7 @@ Listing the options for first test paper.
     </td>
     </tr>                
 {% endfor %}
+</tbody>
 </table>
 
 {% if np == 2  %}
@@ -76,13 +78,14 @@ Listing the options for first test paper.
 <h3>Options available for {{second_paper}} </h3>
 
 <table>
-<tr>
+<thead>
 <td><p>Programme Code </p></td>
 <td><p>Programme Name </p></td>
 <td><p>Insitute </p></td>
 <td><p>Preference </p></td>
-</tr>
+</thead>
 
+<tbody>
 {% for option in options_available_second %}     
     <tr> 
     <td><p> {{option.opt_code }} </p></td>
@@ -97,13 +100,18 @@ Listing the options for first test paper.
     </td>
     </tr>                
 {% endfor %}
+</tbody>
 </table>
 
 {% endif %}
 
-<p><label for="check">I am responsible for my own choices.</label> 
-<input type="checkbox" name="check" id="check" /></p>
-<input type="submit" name="save" value="Save" />
+
+<div class="alert">
+
+<p><input type="checkbox" name="check" id="check" /><label for="check">I am responsible for my own choices.</label> 
+</p>
+<input type="submit" name="save" value="Save" class="btn" />
+</div>
 </form>
 
 {% endblock content %}
