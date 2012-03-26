@@ -3,6 +3,17 @@
 {% load range_filter %}
 
 {% block title %} JAM 2012 Application form {% endblock %}
+{% block scripts %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function(){
+    $("#check").click(function() {
+        $("#checkButton").attr("disabled", !this.checked);
+    });
+});
+
+</script>
+{% endblock %}
 
 {% block content %}
 
@@ -47,7 +58,7 @@ Listing the options for first test paper.
 <form action="/allotter/{{user.username}}/submit/" method="post">
 {% csrf_token %}
 
-<table class="table table-bordered table-striped ">
+<table class="table table-bordered table-striped">
 <thead>
 <td><p>Programme Code </p></td>
 <td><p>Programme Name </p></td>
@@ -110,7 +121,7 @@ Listing the options for first test paper.
 
 <p><input type="checkbox" name="check" id="check" /><label for="check">I am responsible for my own choices.</label> 
 </p>
-<input type="submit" name="save" value="Save" class="btn" />
+<input type="submit" name="save" value="Save" class="btn" id="checkButton" disabled="disabled" />
 </div>
 </form>
 
