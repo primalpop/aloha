@@ -132,7 +132,8 @@ def user_logout(request):
     return redirect ('/allotter/')
 
 #TODO: Extensive Testing
-                            
+     
+@login_required                       
 def submit_options(request, reg_no):
     """
         Gets the Options and their preference number through the POST object and
@@ -169,6 +170,7 @@ def submit_options(request, reg_no):
     user_application.save()
     return HttpResponseRedirect(reverse('allotter.views.complete', args=(reg_no,)))
 
+@login_required
 def complete(request, reg_no):
     user = get_object_or_404(User, username=reg_no)
     sec_email = user.get_profile().secondary_email
