@@ -8,3 +8,7 @@ jam
 *.png
 *.txt
 *.json
+eggs/
+parts/
+develop-eggs/
+bin/
