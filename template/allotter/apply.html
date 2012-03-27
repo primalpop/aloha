@@ -16,15 +16,17 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
     $("select").change(function () {
-        var $this = $(this);
-        var prevVal = $this.data("prev");
-        var otherSelects = $("select").not(this);
-        otherSelects.find("option[value=" + $(this).val() + "]").attr('disabled', true);
-        if (prevVal) {
-            otherSelects.find("option[value=" + prevVal + "]").attr('disabled', false);
-        }
+        if ($("select").val() !="0"){
+            var $this = $(this);
+            var prevVal = $this.data("prev");
+            var otherSelects = $("select").not(this);
+            otherSelects.find("option[value=" + $(this).val() + "]").attr('disabled', true);
+            if (prevVal) {
+                otherSelects.find("option[value=" + prevVal + "]").attr('disabled', false);
+            }
 
-        $this.data("prev", $this.val());
+            $this.data("prev", $this.val());
+            }
     });
 });
 </script>
