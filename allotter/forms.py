@@ -98,7 +98,7 @@ class UserDetailsForm(forms.Form):
         self.helper.form_id = 'id-detailsform'
         self.helper.form_method = 'post'
         self.helper.form_class = 'form-horizontal'
-        self.helper.form_action = "/allotter/details/"
+        self.helper.form_action = "/allotter/"+user.username+"/details/"
         self.helper.add_input(Submit('submit', 'Submit'))
         super(UserDetailsForm, self).__init__(*args, **kwargs)
 

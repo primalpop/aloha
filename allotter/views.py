@@ -67,7 +67,7 @@ def submit_details(request, reg_no):
         if form.is_valid():
             data = form.cleaned_data
             form.save()
-            return redirect("/allotter/apply/")           
+            return HttpResponseRedirect(reverse('allotter.views.apply', args=(user.username,)))
         else:
             return render(request, 'allotter/details.html', {'form':form})  
                 
