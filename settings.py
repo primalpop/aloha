@@ -10,6 +10,11 @@ ADMINS = (
      ('Primal Pappachan', 'primal@fossee.in'),
 )
 
+AUTHORS = (
+     ('Primal Pappachan', 'primal@fossee.in'),
+     ('Parth Buch', 'parth@fossee.in'),
+)
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -129,6 +134,7 @@ INSTALLED_APPS = (
     #Third-Party Apps
     'south',
     'crispy_forms',    
+    'django_extensions',
 
     'allotter',
 )

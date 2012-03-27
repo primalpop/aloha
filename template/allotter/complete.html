@@ -2,7 +2,6 @@
 
 {% block title %}Options saved.{% endblock %}
 
-
 {% block content %}
 
 <h2> The following options have been saved. Please verify them before logging out.</h2>
@@ -42,17 +41,17 @@ An email with the list of options has been sent {{ email }} for book-keeping pur
 
 {% endif %}
 
-<form action="/allotter/apply/" method="post">
+<form id="apply" action="/allotter/{{username}}/apply/" method="post">
 {% csrf_token %}
 <input type="submit" name="apply" value="Edit Options" class="btn" />
 </form>
 
-<form action="/allotter/get_pdf/" method="post">
+<form id ="get_pdf" action="/allotter/{{username}}/get_pdf/" method="post">
 {% csrf_token %}
 <input type="submit" name="get_pdf" value="Generate PDF" class="btn" />
 </form>
 
-<form action="/allotter/logout/" method="post">
+<form id="logout" action="/allotter/logout/" method="post">
 {% csrf_token %}
 <input type="submit" name="logout" value="Quit Allotment" class="btn" />
 </form>

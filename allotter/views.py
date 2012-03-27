@@ -1,12 +1,11 @@
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, get_object_or_404
-from django.shortcuts import render, redirect
-from django.template import RequestContext
-from django.http import Http404
+from django.contrib.auth.decorators import login_required 
+from django.shortcuts import render, redirect, get_object_or_404
 
-#TODO: Remove this if possible
+from django.http import Http404
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect 
+
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
@@ -16,7 +15,6 @@ from allotter.forms import UserLoginForm, UserDetailsForm
 from itertools import chain
 
 #Reportlab libraries
-from django.http import HttpResponse
 from reportlab.platypus import Table, TableStyle, SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
@@ -26,16 +24,17 @@ from reportlab.lib.enums import TA_JUSTIFY
 import time
 
 def user_login(request):
-
-    """Take the credentials of the user and log the user in."""
+    """
+        Verify the user credentials and log the user in.
+    """
 
     user = request.user
     if user.is_authenticated():
         status = user.get_profile().application.submitted #Getting the submission status
         if status: #If already submitted, takes to Completion Page
-            return HttpResponseRedirect(reverse('allotter.views.complete', args=(user.username,)))
+            return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(user.username,)))
         else: #Otherwise to Option Choosing Page   
-            return redirect("/allotter/details")
+            return HttpResponseRedirect(reverse('allotter.views.apply', args=(user.username,)))
 
     if request.method == "POST":
         form = UserLoginForm(request.POST)
@@ -44,22 +43,20 @@ def user_login(request):
             login(request, user)
             status = user.get_profile().application.submitted #Getting the submission status
             if status:
-                return HttpResponseRedirect(reverse('allotter.views.complete', args=(user.username,)))
-            else:    
-                return redirect("/allotter/details")
+                return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(user.username,)))
+            else:  
+                return HttpResponseRedirect(reverse('allotter.views.submit_details', args=(user.username,)))  
         else:
             context = {"form": form}
-            return render_to_response('allotter/login.html', context,
-                        context_instance=RequestContext(request))
+            return render(request, 'allotter/login.html', context)
     else:
         form = UserLoginForm()
         context = {"form": form}
-        return render_to_response('allotter/login.html', context,
-                                     context_instance=RequestContext(request))
+        return render(request, 'allotter/login.html', context)
                                      
 
 @login_required
-def submit_details(request):
+def submit_details(request, reg_no):
     """
         Get the secondary email address, phone number and save it to the Profile.
     """
@@ -72,15 +69,12 @@ def submit_details(request):
             form.save()
             return redirect("/allotter/apply/")           
         else:
-            return render_to_response('allotter/details.html',
-                {'form':form},
-                context_instance=RequestContext(request))  
+            return render(request, 'allotter/details.html', {'form':form})  
                 
     else:
         form = UserDetailsForm(request.user)
         context = {"form": form}
-        return render_to_response('allotter/details.html', context,
-                                     context_instance=RequestContext(request))              
+        return render(request, 'allotter/details.html', context)              
        
 def get_details(user, error_message = ""):
     """
@@ -111,7 +105,7 @@ def get_details(user, error_message = ""):
     return context              
                                      
 @login_required
-def apply(request):
+def apply(request, reg_no):
     """
         Displays the application page for an authenticated user.
     """
@@ -120,20 +114,18 @@ def apply(request):
         return redirect('/allotter/login/')
     
     context = get_details(user) 
-    ci = RequestContext(request)
               
-    return render_to_response('allotter/apply.html', context,
-        context_instance=ci)                         
+    return render(request, 'allotter/apply.html', context)                         
 
-##Logouts the user.
 
 def user_logout(request):
+    ##Logouts the user.
     logout(request)
-    return redirect ('/allotter/')
+    return redirect ('/allotter/login/')
 
 #TODO: Extensive Testing
-     
-@login_required                       
+@login_required                            
+>>>>>>> master
 def submit_options(request, reg_no):
     """
         Gets the Options and their preference number through the POST object and
@@ -165,23 +157,29 @@ def submit_options(request, reg_no):
         if int(opt[0]): #ignoring the options for which None was marked
             options_code_list.append(opt[1])
          
-    user_application.options_selected = options_code_list #Setting the attribute in model   
+    user_application.options_selected = options_code_list #Saving the data in model   
     user_application.submitted = True #Submission Status
     user_application.save()
-    return HttpResponseRedirect(reverse('allotter.views.complete', args=(reg_no,)))
+    return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(reg_no,)))
 
-@login_required
-def complete(request, reg_no):
+
+def complete_allotment(request, reg_no):
+    """
+        Passes the chosen options queryset to the Completion Page Template
+    """
     user = get_object_or_404(User, username=reg_no)
     sec_email = user.get_profile().secondary_email
     options_chosen = get_chosen_options(user)
-    context = {'user': reg_no, 'email': sec_email,  
+    context = {'username': reg_no, 'email': sec_email,  
                 'options_chosen': options_chosen}
-    ci = RequestContext(request)          
-    return render_to_response('allotter/complete.html', context, context_instance=ci)
+              
+    return render(request, 'allotter/complete.html', context)
     
     
 def get_chosen_options(user):
+    """
+        Reads the options submitted by the user in the Application page
+    """
     user_profile = user.get_profile()
     user_application = user_profile.application
     np = user_application.np
@@ -191,7 +189,13 @@ def get_chosen_options(user):
         chosen_options.append(Option.objects.get(opt_code=int(oc))) 
     return chosen_options
         
-def generate_pdf(request, reg_no="1234567"):
+        
+@login_required        
+def generate_pdf(request, reg_no):
+    """
+        The Ugly code for generating the pdf using ReportLab.
+    """
+    
     user = get_object_or_404(User, username=reg_no)
     user_profile = user.get_profile()
     user_application = user_profile.application
@@ -219,12 +223,21 @@ def generate_pdf(request, reg_no="1234567"):
     elements.append(Paragraph(ptext, styles["Normal"]))
     elements.append(Spacer(1, 12))
     
-    ptext = '<font size=12>Following are the options in order of preference</font>' 
+    ptext = '<font size=12>No options were chosen.</font>' 
     elements.append(Paragraph(ptext, styles["Normal"]))
     elements.append(Spacer(1, 12))
     
     data = []   
-    options = get_chosen_options(user)
+    options = get_chosen_options(user) ##Put a check to show when the options chosen is empty
+    
+    if not(options):
+        doc.build(elements) 
+        return response 
+        
+    ptext = '<font size=12>Following are the options in order of preference</font>' 
+    elements.append(Paragraph(ptext, styles["Normal"]))
+    elements.append(Spacer(1, 12))    
+        
     counter = 1
     for opt in options:
         data.append([counter, opt.opt_code, opt.opt_location, opt.opt_name])
@@ -239,8 +252,7 @@ def generate_pdf(request, reg_no="1234567"):
     ptext = '<font size=12>%s</font>' % formatted_time
     elements.append(Paragraph(ptext, styles["Normal"]))
     elements.append(Spacer(1, 12))
-    
-      
+ 
     doc.build(elements)
        
     return response    
