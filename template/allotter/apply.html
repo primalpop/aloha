@@ -11,7 +11,22 @@ $(document).ready(function(){
         $("#checkButton").attr("disabled", !this.checked);
     });
 });
+</script>
 
+<script>
+$(document).ready(function(){
+    $("select").change(function () {
+        var $this = $(this);
+        var prevVal = $this.data("prev");
+        var otherSelects = $("select").not(this);
+        otherSelects.find("option[value=" + $(this).val() + "]").attr('disabled', true);
+        if (prevVal) {
+            otherSelects.find("option[value=" + prevVal + "]").attr('disabled', false);
+        }
+
+        $this.data("prev", $this.val());
+    });
+});
 </script>
 {% endblock %}
 
@@ -124,5 +139,4 @@ Listing the options for first test paper.
 <input type="submit" name="save" value="Save" class="btn" id="checkButton" disabled="disabled" />
 </div>
 </form>
-
 {% endblock content %}
