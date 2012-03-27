@@ -125,7 +125,6 @@ def user_logout(request):
 
 #TODO: Extensive Testing
 @login_required                            
->>>>>>> master
 def submit_options(request, reg_no):
     """
         Gets the Options and their preference number through the POST object and

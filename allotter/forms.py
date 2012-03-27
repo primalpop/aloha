@@ -94,11 +94,17 @@ class UserDetailsForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-detailsform'
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_action = "/allotter/details/"
+        self.helper.add_input(Submit('submit', 'Submit'))
         super(UserDetailsForm, self).__init__(*args, **kwargs)
 
-    email = forms.EmailField(label="Email Address", 
+    email = forms.EmailField(label="Email Address", widget=forms.TextInput(attrs={"placeholder":"john@example.com",}),
                 help_text="Enter a valid email id if you have any.")
-    phone_number = forms.IntegerField(label="Phone number",
+    phone_number = forms.IntegerField(label="Phone number", widget=forms.TextInput(attrs={"placeholder":"9876543210",}),
                 help_text="10 digit number with code")
     
     
