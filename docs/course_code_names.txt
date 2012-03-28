@@ -1,0 +1,46 @@
+101:M.Sc. Applied Geology (4 Semesters):IIT Bombay
+102:M.Sc. Applied Geophysics (4 Semesters):IIT Bombay
+103:M.Sc. Applied Statistics and Informatics:IIT Bombay
+104:M.Sc. Biotechnology (4 Semesters):IIT Bombay
+105:M.Sc. Chemistry (4 Semesters):IIT Bombay
+106:M.Sc. Mathematics (4 Semesters):IIT Bombay
+107:M.Sc. Physics (4 Semesters):IIT Bombay
+108:M.Sc.-Ph.D Dual Degree in Applied Geology:IIT Bombay
+109:M.Sc.-Ph.D Dual Degree in Applied Geophysics:IIT Bombay
+110:M.Sc.-Ph.D. Dual Degree in Biotechnology:IIT Bombay
+111:M.Sc.-Ph.D Dual Degree in Chemistry:IIT Bombay
+112:M.Sc.-Ph.D. Dual Degree in Energy:IIT Bombay
+113:M.Sc.-Ph.D. Dual Degree in Env.Sc & Engg:IIT Bombay
+114:M.Sc.-Ph.D. Dual Deg. in Operations Research:IIT Bombay
+115:M.Sc.-Ph.D. Dual Degree in Physics:IIT Bombay
+116:M.Sc. (Phy) - M.Tech. (Mat.Sc):IIT Bombay
+201:M.Sc. Chemistry (4 Semesters):IIT Delhi
+202:M.Sc. Mathematics (4 Semesters):IIT Delhi
+203:M.Sc. Physics (4 Semesters):IIT Delhi
+301:M.Sc. Chemistry (4 Semesters):IIT Guwahati
+302:M.Sc. Mathematics & Computing (4 Semesters):IIT Guwahati
+303:M.Sc. Physics (4 Semesters):IIT Guwahati
+401:M.Sc. Chemistry (4 Semesters):IIT Kanpur
+402:M.Sc. Mathematics (4 Semesters):IIT Kanpur
+403:M.Sc. Physics (4 Semesters):IIT Kanpur
+404:M.Sc. Statistics (4 Semesters):IIT Kanpur
+405:M.Sc.-Ph.D. Dual Degree in Physics:IIT Kanpur
+501:Joint M.Sc.-Ph.D. Programme in Chemistry:IIT Kharagpur
+502:Joint M.Sc.-Ph.D. Programme in Geology:IIT Kharagpur
+503:Joint M.Sc.-Ph.D. Programme in Geophysics:IIT Kharagpur
+504:Joint M.Sc.-Ph.D. Programme in Mathematics:IIT Kharagpur
+505:Joint M.Sc.-Ph.D. Programme in Physics:IIT Kharagpur
+601:M.Sc. Chemistry (4 Semesters):IIT Madras
+602:M.Sc. Mathematics (4 Semesters):IIT Madras
+603:M.Sc. Physics (4 Semesters):IIT Madras
+701:M.Sc. Applied Geology (4 Semesters):IIT Roorkee
+702:M.Sc. Applied Mathematics (4 Semesters):IIT Roorkee
+703:M.Sc. Biotechnology (4 Semesters):IIT Roorkee
+704:M.Sc. Chemistry (4 Semesters):IIT Roorkee
+705:M.Sc. Industrial Mathematics and Informatics:IIT Roorkee
+706:M.Sc. Physics (4 Semesters):IIT Roorkee
+707:M.Tech. Geological Technology (6 Semesters):IIT Roorkee
+708:M.Tech. Geophysical Technology (6 Semesters):IIT Roorkee
+709:Master of Computer Applications (6 Semesters):IIT Roorkee
+801:M.Sc. Chemistry (4 Semesters):IIT Hyderabad
+802:M.Sc. Physics (4 Semesters):IIT Hyderabad

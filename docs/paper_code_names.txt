@@ -1,0 +1,8 @@
+BT:Biotechnology
+CA:Computer Applications
+CY:Chemistry
+GG:Geology
+GP:Geophysics
+MA:Mathematics
+MS:Mathematical Statistics
+PH:Physics
