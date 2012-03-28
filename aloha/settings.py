@@ -110,6 +110,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
 )
 
 ROOT_URLCONF = 'aloha.urls'
@@ -134,7 +135,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     #Third-Party Apps
     'south',
-    'crispy_forms',    
+    'crispy_forms',
 
     'allotter',
 )

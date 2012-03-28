@@ -6,3 +6,8 @@ jam
 .pydevproject
 *.png
 *.json
+eggs/
+parts/
+develop-eggs/
+bin/
+.installed.cfg
