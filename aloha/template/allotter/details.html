@@ -3,17 +3,19 @@
 {% block title %}Details form {% endblock %}
 
 {% block content %}
+<h2>Please provide the following details.</h2>
+<div class="alert alert-block">
+<h4 class="alert-heading">Warning!</h4>
+These details cannot be changed once entered.
+</div>
 Please provide the following details.
-<form action="/allotter/{{user.username}}/details/" method="post">
-{% csrf_token %}
 
-<table>
-{{ form.as_table }}
-</table>
+<hr/>
 
-<h2> These details cannot be changed once entered. </h2>
 
-<input type="submit" value="Submit" />
-</form>
+{% load crispy_forms_tags %}
+{% crispy form %}
+
+
 
 {% endblock content %}

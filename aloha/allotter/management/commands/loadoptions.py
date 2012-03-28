@@ -5,7 +5,7 @@ from allotter.models import Exam, Option
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--pcc',metavar='Paper course code file name', type=str),
+        make_option('--pcc',metavar='Paper course code eligibility file name', type=str),
         make_option('--cc',metavar='Course code file name', type=str),
     )
     help = "Give the filenames of the csv files that has all the option code, name and exam code relation"
@@ -40,13 +40,13 @@ def load_option(options):
     except IOError as (errno,strerror):
         print "I/O error({0}): {1}".format(errno, strerror)
         
-    paperReader = reader(paperCourseFile, delimiter=",")
-    courseReader = reader(courseCodeFile, delimiter=",")
+    paperReader = reader(paperCourseFile, delimiter=":")
+    courseReader = reader(courseCodeFile, delimiter=":")
     
     courseDict = {}
     
     for data in courseReader:                                                   
-        courseDict[int(data[0])]=data[1]
+        courseDict[int(data[0])]=[data[1],data[2]]
     
     for data in paperReader:
         exam = Exam.objects.get(exam_code=data[0])
@@ -54,7 +54,7 @@ def load_option(options):
             try:
                 new_option = Option.objects.get(opt_code=value)
             except Option.DoesNotExist:
-                new_option = Option(opt_name=courseDict[int(value)],opt_code=value)
+                new_option = Option(opt_name=courseDict[int(value)][0],opt_code=value, opt_location=courseDict[int(value)][1])
                 new_option.save()
             new_option.exam.add(exam)
-            print "Added (option {0} with code {1} and exam {2})".format(courseDict[int(value)],value,exam)
+            print "Added (option {0} with code {1} at {3} and exam {2})".format(courseDict[int(value)][0],value,exam,courseDict[int(value)][1])

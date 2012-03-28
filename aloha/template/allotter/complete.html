@@ -9,14 +9,15 @@
 <h3> Please keep in mind that, the next time you login you will be redirected to this page straightaway.</h3>
 
 {% if options_chosen %}
-<table>
-<tr>
+<table class="table table-bordered table-striped">
+<thead>
+<td><p>Prefrence</p></td>
 <td><p>Programme Code </p></td>
-<td><p>Programme Name </p></td>
+<td><p>Programme Name</p></td>
 <td><p>Insitute </p></td>
-<td><p>Preference </p></td>
-</tr>
+</thead>
 
+<tbody>
 {% for option in options_chosen %}
     <tr> 
     <td><p> {{ forloop.counter }} </p></td>
@@ -25,7 +26,7 @@
     <td><p> {{ option.opt_location }} </p></td>
     </tr>
 {% endfor %}
-
+</tbody>
 </table>
 
 {% if email %}
@@ -42,17 +43,17 @@ An email with the list of options has been sent {{ email }} for book-keeping pur
 
 <form id="apply" action="/allotter/{{username}}/apply/" method="post">
 {% csrf_token %}
-<input type="submit" name="apply" value="Edit Options" />
+<input type="submit" name="apply" value="Edit Options" class="btn" />
 </form>
 
+<a href="{{ STATIC_URL }}files/iiitb_voucher.pdf" class="btn pull-right" >Download pdf</a>
 <form id ="get_pdf" action="/allotter/{{username}}/get_pdf/" method="post">
 {% csrf_token %}
-<input type="submit" name="get_pdf" value="Generate PDF" />
+<input type="submit" name="get_pdf" value="Generate PDF" class="btn" />
 </form>
-
 <form id="logout" action="/allotter/logout/" method="post">
 {% csrf_token %}
-<input type="submit" name="logout" value="Quit Allotment" />
+<input type="submit" name="logout" value="Quit Allotment" class="btn" />
 </form>
 
 {% endblock content %}

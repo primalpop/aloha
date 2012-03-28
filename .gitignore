@@ -4,9 +4,7 @@ allotter/migrations/
 jam
 .project
 .pydevproject
-*.csv
 *.png
-*.txt
 *.json
 eggs/
 parts/
