@@ -103,7 +103,6 @@ class Application(models.Model):
 	
     cgy = models.CharField(max_length=10, verbose_name="Category")
 
-    pd = models.BooleanField(verbose_name="Physical Disability", default=False, blank=True)
     
     submitted = models.BooleanField(verbose_name="Submission Status", default=False)
 
@@ -119,10 +118,10 @@ class Profile(models.Model):
     dob = models.DateField(verbose_name=u"Date of Birth",
         help_text=u"Date of birth as given in the application")
         
-    secondary_email = models.EmailField(verbose_name=u"Secondary Email",
+    secondary_email = models.EmailField(verbose_name=u"Secondary Email", blank=True, null=True,
         help_text=u"Email address read from user after authentication")
         
-    phone_number = models.IntegerField(max_length=10, verbose_name="Phone Number",
+    phone_number = models.IntegerField(max_length=10, verbose_name="Phone Number", blank=True, null=True,
         help_text=u"Phone number read from user after authentication")
     
     #Application for the Profile    
