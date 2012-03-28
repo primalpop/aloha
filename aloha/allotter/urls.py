@@ -7,5 +7,6 @@ urlpatterns = patterns('allotter.views',
     url(r'^(?P<reg_no>\d+)/details/$', 'submit_details'),
     url(r'^(?P<reg_no>\d+)/get_pdf/$', 'generate_pdf'),
     url(r'^(?P<reg_no>\d+)/submit/$', 'submit_options', name='submit_options'),
-    url(r'^(?P<reg_no>\d+)/complete/$', 'complete_allotment', name='complete_allotment'), 
+    url(r'^(?P<reg_no>\d+)/complete/$', 'complete_allotment', name='complete_allotment'),
+    url(r'^$', 'user_login'), 
 )
