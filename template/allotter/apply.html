@@ -16,17 +16,19 @@ $(document).ready(function(){
 <script>
 $(document).ready(function(){
     $("select").change(function () {
-        if ($("select").val() !="0"){
+        console.log("here we go")
             var $this = $(this);
             var prevVal = $this.data("prev");
             var otherSelects = $("select").not(this);
-            otherSelects.find("option[value=" + $(this).val() + "]").attr('disabled', true);
+            if ($(this).val() !="0"){
+                console.log("some shit would happen")
+                otherSelects.find("option[value=" + $(this).val() + "]").attr('disabled', true);
+            }
             if (prevVal) {
-                otherSelects.find("option[value=" + prevVal + "]").attr('disabled', false);
+                    otherSelects.find("option[value=" + prevVal + "]").attr('disabled', false);
             }
 
             $this.data("prev", $this.val());
-            }
     });
 });
 </script>
@@ -105,7 +107,7 @@ Listing the options for first test paper.
 
 <h3>Options available for {{second_paper}} </h3>
 
-<table>
+<table class="table table-bordered table-striped">
 <thead>
 <td><p>Programme Code </p></td>
 <td><p>Programme Name </p></td>
