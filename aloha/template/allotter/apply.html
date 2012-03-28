@@ -91,7 +91,7 @@ Listing the options for first test paper.
     <td><p> {{ option.opt_code }} </p></td>
     <td><p> {{option.opt_name }} </p></td>
     <td><p> {{option.opt_location }} </p></td>
-    <td><select name="{{option.opt_code}}">
+    <td><select id="{{option.opt_code}}" name="{{option.opt_code}}">
     {% for i in options_range %}
         <option value="{{i}}" selected="selected">Preference {{i}}</option>
     {% endfor %}
@@ -121,7 +121,7 @@ Listing the options for first test paper.
     <td><p> {{option.opt_code }} </p></td>
     <td><p> {{option.opt_name }} </p></td>
     <td><p> {{option.opt_location }} </p></td>
-    <td><select name="{{option.opt_code}}">
+    <td><select id="option.opt_code" name="{{option.opt_code}}">
     {% for i in options_range %}
         <option value="{{i}}" selected="selected">Preference {{i}}</option>
     {% endfor %}
