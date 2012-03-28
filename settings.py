@@ -8,6 +8,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
      ('Primal Pappachan', 'primal@fossee.in'),
+     ('Parth Buch', 'parth.buch.115@gmail.com'),
 )
 
 AUTHORS = (
@@ -134,7 +135,6 @@ INSTALLED_APPS = (
     #Third-Party Apps
     'south',
     'crispy_forms',    
-    'django_extensions',
 
     'allotter',
 )
@@ -162,6 +162,9 @@ LOGGING = {
         },
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 AUTH_PROFILE_MODULE = "allotter.Profile"
 LOGIN_URL = '/allotter/login'
