@@ -133,8 +133,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     #Third-Party Apps
     'south',
-    'django_extensions',
-    #'debug_toolbar',
+    'crispy_forms',
 
     'allotter',
 )
