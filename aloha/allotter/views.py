@@ -122,6 +122,13 @@ def user_logout(request):
     ##Logouts the user.
     logout(request)
     return redirect ('/allotter/login/')
+    
+##http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-##order    
+def rem_dup(seq):
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in seq if x not in seen and not seen_add(x)]
+    
 
 #TODO: Extensive Testing
 @login_required                            
@@ -157,8 +164,9 @@ def submit_options(request, reg_no):
     for opt in options_chosen_list:
         if int(opt[0]): #ignoring the options for which None was marked
             options_code_list.append(opt[1])
-         
-    user_application.options_selected = list(set(options_code_list)) #Saving the data in model   
+    
+    print options_code_list     
+    user_application.options_selected = rem_dup(options_code_list) #Saving the data in model   
     user_application.submitted = True #Submission Status
     user_application.save()
     return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(reg_no,)))
