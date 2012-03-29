@@ -41,9 +41,8 @@ $(document).ready(function(){
 <p>Read the following instructions carefully before continuing. </p>
 
 <hr/>
-Choose the options as per your preference
 
-<h3>You are eligible for {{first_paper}} 
+<h4>You are eligible for programmes on the basis of <b>{{first_paper}} </b>
 
 {% comment %}
 Checking if there is second paper and displaying its name.
@@ -51,17 +50,29 @@ Checking if there is second paper and displaying its name.
 
 {% if np == 2  %}
 
-and {{second_paper}}
+and <b>{{second_paper}}</b>
 
 {% endif %}
 
-</h3>
+</h4>
 
-<h4>For the paper(s) in which you are in the merit list, the following
-options are available to you. Please rank your choices.</h4>
+<br/> 
 
-<p> Preferences will be assigned to options in the ascending order. Make sure it's 
-<b>None</b> for all options after your last option(so that it is not considered).</p>
+<p> Choose the programmes of interest that you are eligible for, based on the paper
+qualified in JAM 2012. If you have qualified in more than one paper you are eligible 
+for programmes covered by both papers. Mention the order of preference (1, 2, 3, etc) 
+in the last column. In the 'Order of Preference' column, mark <b>None</b> against the programmes
+that you are NOT interested in. <br/> <b>Please note:</b> The order of Preference plays an important role in
+the admission process.</p>
+
+<p>
+<b>Note: </b>If you have qualified in two papers in JAM 2012 and would like to choose programmes eligible
+under both the papers, the order of preferences should be combined. For example: a candidate
+qualifying both BT and CY can have an order of preference such as 1 under BT, 2 under CY, 3
+under BT and so on.
+</p>
+ 
+
 
 <hr/>
 
@@ -138,7 +149,7 @@ Listing the options for first test paper.
 
 <div class="alert">
 
-<p><input type="checkbox" name="check" id="check" /><label for="check">I am responsible for my own choices.</label> 
+<p><input type="checkbox" name="check" id="check" /><label for="check">I hereby declare that the order of preference given by me for eligible programmes is final.</label> 
 </p>
 <input type="submit" name="save" value="Save" class="btn" id="checkButton" disabled="disabled" />
 </div>

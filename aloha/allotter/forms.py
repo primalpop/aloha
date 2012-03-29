@@ -18,11 +18,11 @@ class UserLoginForm(forms.Form):
     
     ##Registration Number as Username
     username = forms.IntegerField(label="Registration Number", 
-             help_text="As on your Examination ID Card")
+             help_text="As on your Examination Admit Card")
  
     ##Application number as password    
     password = forms.CharField(label = "Application Number", 
-             max_length=10, help_text="As on your Examination ID Card")
+             max_length=10, help_text="As on your Examination Admit Card")
     
     dob = forms.DateField(label="Date of Birth", 
             widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES, attrs={"class":"span1"}),
@@ -103,14 +103,14 @@ class UserDetailsForm(forms.Form):
         super(UserDetailsForm, self).__init__(*args, **kwargs)
 
     email = forms.EmailField(label="Email Address", widget=forms.TextInput(attrs={"placeholder":"john@example.com",}),
-                help_text="Enter a valid email id if you have any.")
+                help_text="Enter a valid email id where you will able to receive correspondence from JAM 2012.")
     phone_number = forms.IntegerField(label="Phone number", widget=forms.TextInput(attrs={"placeholder":"9876543210",}),
-                help_text="10 digit number with code")
+                help_text="Phone number with code")
     
     
     def clean_phone_number(self):
         pno = self.cleaned_data['phone_number']
-        if str(pno).strip(digits) or len(str(pno)) != 10:
+        if str(pno).strip(digits):
             raise forms.ValidationError("Not a valid phone number")
         return pno  
         

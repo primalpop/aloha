@@ -2,6 +2,19 @@
 
 {% block title %}Options saved.{% endblock %}
 
+{% block scripts %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function(){
+    $("#check").click(function() {
+        $("#checkButton").attr("disabled", !this.checked);
+    });
+});
+</script>
+
+{% endblock %}
+
 {% block content %}
 
 <h2> The following options have been saved. Please verify them before logging out.</h2>
@@ -31,29 +44,48 @@
 
 {% if email %}
 
-An email with the list of options has been sent {{ email }} for book-keeping purposes.
+An email with the list of options has been sent to {{ email }} for reference.
 
 {% endif %}
 
 {% else %}
 
-<h3> No Options were chosen, Press Edit Options to go back and select options otherwise Press logout to exit the allotment process </h3>
+<h3> No Options were chosen, click <b>Edit Options</b> to go back and select 
+options otherwise click <b>Quit Allotment</b> to exit the allotment process </h3>
 
 {% endif %}
 
+<br/>
+<br/>
+<p>You may edit your options by clicking <b>Edit Options</b>. <i>Please keep in mind that your previous options 
+will be deleted.</i></p>
 <form id="apply" action="/allotter/{{username}}/apply/" method="post">
 {% csrf_token %}
 <input type="submit" name="apply" value="Edit Options" class="btn" />
 </form>
 
-<a href="{{ STATIC_URL }}files/iiitb_voucher.pdf" class="btn pull-right" >Download pdf</a>
+<p>Click on the button <b>Download Application PDF</b> to download a PDF of the application form.</p>
+<a href="{{ STATIC_URL }}files/iiitb_voucher.pdf" class="btn" >Download Application PDF</a>
+
+
+<br/> <br/>
+<p>Click on the button <b>Generate Allotment PDF</b> to generate a Portable Document 
+Format(PDF) of your options. Take a print out of this PDF and send it with 
+your completed application form to the Organizing chairman </p>
 <form id ="get_pdf" action="/allotter/{{username}}/get_pdf/" method="post">
 {% csrf_token %}
-<input type="submit" name="get_pdf" value="Generate PDF" class="btn" />
+<input type="submit" name="get_pdf" value="Generate Allotment PDF" class="btn" />
 </form>
+
 <form id="logout" action="/allotter/logout/" method="post">
 {% csrf_token %}
-<input type="submit" name="logout" value="Quit Allotment" class="btn" />
+
+<div class="alert">
+
+<p><input type="checkbox" name="check" id="check"/><label for="check">I have downloaded 2 PDF's that together consitute my application.</label> 
+</p>
+<input type="submit" name="logout" value="Log out" class="btn" id="checkButton" disabled="disabled" />
+</div>
 </form>
 
 {% endblock content %}
