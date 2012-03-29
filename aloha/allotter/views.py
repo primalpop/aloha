@@ -85,20 +85,24 @@ def get_details(user, error_message = ""):
     user_application = user_profile.application
     np = user_application.np #Number of Papers
     first_paper = user_application.first_paper #First Paper Name
+    first_paper_code = first_paper.exam_code
     options_available_first = Option.objects.filter(exam__exam_name=first_paper).distinct() #Options for First paper
     oafl = len(options_available_first)  
     if np == 2: #If written two exams
         second_paper = user_application.second_paper
+        second_paper_code = second_paper.exam_code
         options_available_second = Option.objects.filter(exam__exam_name=second_paper).distinct()
         oasl = len(options_available_second)
         context = {'user': user, 'first_paper': first_paper,
-            'options_available_first' : options_available_first, 
-            'second_paper': second_paper, 
+            'options_available_first' : options_available_first,
+            'first_paper_code' : first_paper_code, 
+            'second_paper': second_paper, 'second_paper_code': second_paper_code,
             'options_available_second' : options_available_second,
             'np' : np, 'options_range': range(1, oafl + oasl + 1, 1), 
             'error_message': error_message}    
     else: #If written only one exam
         context = {'user': user, 'first_paper': first_paper,
+            'first_paper_code' : first_paper_code,
             'options_available_first' : options_available_first,
             'options_range': range(1, oafl + 1, 1), 
             'np' : np, 'error_message' : error_message}     
