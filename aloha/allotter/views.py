@@ -146,17 +146,19 @@ def submit_options(request, reg_no):
         options_available_list = options_available_first
         
     options_chosen_list = [] #Initializing empty list for storing options
+ 
     for option in options_available_list:   
         option_pref = request.POST[unicode(option.opt_code)]           
         options_chosen_list.append([option_pref, str(option.opt_code)]) #[preference, option code]
     
+      
     options_chosen_list.sort() #Sorting by preference
     options_code_list = []
     for opt in options_chosen_list:
         if int(opt[0]): #ignoring the options for which None was marked
             options_code_list.append(opt[1])
          
-    user_application.options_selected = options_code_list #Saving the data in model   
+    user_application.options_selected = list(set(options_code_list)) #Saving the data in model   
     user_application.submitted = True #Submission Status
     user_application.save()
     return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(reg_no,)))
