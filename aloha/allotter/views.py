@@ -13,6 +13,7 @@ from allotter.models import Profile, Option, Exam
 from allotter.forms import UserLoginForm, UserDetailsForm
 
 from itertools import chain
+from django.core.mail import send_mail, mail_admins
 
 #Reportlab libraries
 from reportlab.platypus import Table, TableStyle, SimpleDocTemplate, Paragraph, Spacer
@@ -172,7 +173,7 @@ def submit_options(request, reg_no):
     print options_code_list     
     user_application.options_selected = rem_dup(options_code_list) #Saving the data in model   
     user_application.submitted = True #Submission Status
-    user_application.save()
+    user_application.save() 
     return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(reg_no,)))
 
 
@@ -185,7 +186,19 @@ def complete_allotment(request, reg_no):
     options_chosen = get_chosen_options(user)
     context = {'username': reg_no, 'email': sec_email,  
                 'options_chosen': options_chosen}
-              
+    ##Sending mail with allotment details             
+    admin = User.objects.get(pk=1)            
+    from_email = admin.email
+    subject = "JAM 2012 admissions"
+    content = "The following options were chosen by you \n \n"
+    if options_chosen:
+        counter = 1
+        for option in options_chosen:
+            content = "Preference Number: %s, Option Code: %s, Option Name: %s, Location: %s \n"  %(counter, option.opt_code, option.opt_name, option.opt_location) 
+                            
+    content += "Please do not delete this email and keep it for reference purposes. \n Regards, \n JAM Office, IIT Bombay"                  
+    send_mail(subject, content, from_email, [sec_email])
+    mail_admins(subject, content)                   
     return render(request, 'allotter/complete.html', context)
     
     
