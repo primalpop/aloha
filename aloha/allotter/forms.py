@@ -11,7 +11,7 @@ from crispy_forms.layout import Submit
 
 from string import digits
 
-BIRTH_YEAR_CHOICES = ('1986','1987','1988','1989','1990','1991')
+BIRTH_YEAR_CHOICES = tuple(range(1960, 1994, 1))
 
 
 class UserLoginForm(forms.Form):

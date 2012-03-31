@@ -171,6 +171,7 @@ EMAIL_HOST = 'smtp-auth.iitb.ac.in'
 
 # Port for sending e-mail.
 EMAIL_PORT = '25'
+EMAIL_PORT = ""
 
 # Optional SMTP authentication information for EMAIL_HOST.
 EMAIL_HOST_USER = ''
