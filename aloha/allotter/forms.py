@@ -104,8 +104,7 @@ class UserDetailsForm(forms.Form):
 
     email = forms.EmailField(label="Email Address", widget=forms.TextInput(attrs={"placeholder":"john@example.com",}),
                 help_text="Enter a valid email id where you will able to receive correspondence from JAM 2012.")
-    phone_number = forms.IntegerField(label="Phone number", widget=forms.TextInput(attrs={"placeholder":"9876543210",}),
-                help_text="Phone number with code")
+    phone_number = forms.CharField(label="Phone number", max_length=15, widget=forms.TextInput(attrs={"placeholder":"9876543210",}), help_text="Phone number with code")
     
     
     def clean_phone_number(self):

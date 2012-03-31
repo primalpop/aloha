@@ -121,7 +121,7 @@ class Profile(models.Model):
     secondary_email = models.EmailField(verbose_name=u"Secondary Email", blank=True, null=True,
         help_text=u"Email address read from user after authentication")
         
-    phone_number = models.IntegerField(max_length=10, verbose_name="Phone Number", blank=True, null=True,
+    phone_number = models.CharField(max_length=15, verbose_name="Phone Number", blank=True, null=True,
         help_text=u"Phone number read from user after authentication")
     
     #Application for the Profile    
