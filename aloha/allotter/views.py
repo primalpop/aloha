@@ -197,8 +197,8 @@ def complete_allotment(request, reg_no):
             content = "Preference Number: %s, Option Code: %s, Option Name: %s, Location: %s \n"  %(counter, option.opt_code, option.opt_name, option.opt_location) 
                             
     content += "Please do not delete this email and keep it for reference purposes. \n Regards, \n JAM Office, IIT Bombay"                  
-    send_mail(subject, content, from_email, [sec_email])
-    mail_admins(subject, content)                   
+    #send_mail(subject, content, from_email, [sec_email])
+    #mail_admins(subject, content)                   
     return render(request, 'allotter/complete.html', context)
     
     
@@ -237,32 +237,27 @@ def generate_pdf(request, reg_no):
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
     
-    ptext = '<font size=15>JAM 2012 Allotment.</font>'         
+    ptext = '<font size=15>JAM 2012 - Admissions.</font>'         
     elements.append(Paragraph(ptext, styles["Justify"]))
     elements.append(Spacer(4, 20))
     
     ptext = '<font size=12>Registration Number: %s</font>' % reg_no 
     elements.append(Paragraph(ptext, styles["Normal"]))
     elements.append(Spacer(1, 12))
-    
-    ptext = '<font size=12>Number of Papers Eligible: %s</font>' % np
-    elements.append(Paragraph(ptext, styles["Normal"]))
-    elements.append(Spacer(1, 12))
-    
-    ptext = '<font size=12>No options were chosen.</font>' 
-    elements.append(Paragraph(ptext, styles["Normal"]))
-    elements.append(Spacer(1, 12))
-    
+     
     data = []   
     options = get_chosen_options(user) ##Put a check to show when the options chosen is empty
     
     if not(options):
+        ptext = '<font size=12>No choices were selected.</font>' 
+        elements.append(Paragraph(ptext, styles["Normal"]))
+        elements.append(Spacer(1, 12))
         doc.build(elements) 
         return response 
         
-    ptext = '<font size=12>Following are the options in order of preference</font>' 
+    ptext = '<font size=12>The choices selected by me are as follows: </font>' 
     elements.append(Paragraph(ptext, styles["Normal"]))
-    elements.append(Spacer(1, 12))    
+    elements.append(Spacer(4, 30))
         
     counter = 1
     for opt in options:
@@ -275,6 +270,16 @@ def generate_pdf(request, reg_no):
                                                                      
     elements.append(t)  
     
+    elements.append(Spacer(4, 30))
+          
+    ptext = '<font size=12>I hereby declare that the order of preference given by me for my eligible programmes is final. </font>' 
+    elements.append(Paragraph(ptext, styles["Normal"]))
+    elements.append(Spacer(4, 25))
+    
+    ptext = '<font size=12>Signature of the Candidate</font>' 
+    elements.append(Paragraph(ptext, styles["Normal"]))
+    elements.append(Spacer(4, 20))
+        
     ptext = '<font size=12>%s</font>' % formatted_time
     elements.append(Paragraph(ptext, styles["Normal"]))
     elements.append(Spacer(1, 12))
