@@ -134,7 +134,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     #Third-Party Apps
-    'south',
     'crispy_forms',
 
     'allotter',
