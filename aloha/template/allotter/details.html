@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}Details form {% endblock %}
-
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    if("{{ cat_flag}}" =="False"){
+        $("#div_id_cat_check").hide()
+    }
+});
+</script>
+{% endblock scripts %}
 {% block content %}
 <h2>Please provide the following details.</h2>
 <div class="alert alert-block">
