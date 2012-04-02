@@ -110,6 +110,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'aloha.middleware.autologout.AutoLogoutMiddleware',
 
 )
 
@@ -182,4 +183,6 @@ AUTH_PROFILE_MODULE = "allotter.Profile"
 LOGIN_URL = '/allotter/login'
 
 APPLICATION_PDF = "application.pdf"
+
+AUTO_LOGOUT_DELAY = 15
 
