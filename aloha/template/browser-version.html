@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<h2> Welcome to the JAM 2012 Admission website</h2>
+<hr />
+<h2>We have detected that you are using an outdated browser.</h2>
+<p>JAM 2012 allotment website would not work on your browser. Please update your browser or install one of the browsers mentioned below.</p>
+
+<hr />
+<table>
+<tr>
+<td><a href="https://www.google.com/chrome" target="_blank"><img src="{{ STATIC_URL }}img/64-chrome.png" /></a></td>
+<td><a href="http://www.getfirefox.com" target="_blank"><img src="{{ STATIC_URL }}img/64-firefox.png" /></a></td>
+<td><a href="http://windows.microsoft.com/en-IN/internet-explorer/products/ie/home" target="_blank"><img src="{{ STATIC_URL }}img/64-ie.png" /></a></td>
+<td><a href="http://www.apple.com/safari/download/" target="_blank"><img src="{{ STATIC_URL }}img/64-safari.png" /></a></td>
+</tr>
+</table>
+
+{% endblock content %}
+
