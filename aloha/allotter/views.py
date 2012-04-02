@@ -206,12 +206,12 @@ def complete_allotment(request):
     admin_content +="\n\n\n#%s:" % (reg_no)
     counter = 1
     for option in options_chosen:
-            content += "%s,%s:"  %(counter, option.opt_code) 
+            admin_content += "%s,%s:"  %(counter, option.opt_code) 
             counter += 1
     admin_content +="#"
     admin_content += time.ctime()   
-    send_mail(subject, content, from_email, [sec_email])
-    mail_admins(subject, admin_content)                   
+    #send_mail(subject, content, from_email, [sec_email])
+    #mail_admins(subject, admin_content)                   
     return render(request, 'allotter/complete.html', context)
     
     
