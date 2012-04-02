@@ -125,15 +125,15 @@ class UserDetailsForm(forms.Form):
         self.helper.form_id = 'id-detailsform'
         self.helper.form_method = 'post'
         self.helper.form_class = 'form-horizontal'
-        self.helper.form_action = "/allotter/"+user.username+"/details/"
+        self.helper.form_action = "/allotter/details/"
         self.helper.add_input(Submit('submit', 'Submit'))
         super(UserDetailsForm, self).__init__(*args, **kwargs)
 
     email = forms.EmailField(label="Email Address", widget=forms.TextInput(attrs={"placeholder":"john@example.com",}),
                 help_text="Enter a valid email id where you will able to receive correspondence from JAM 2012.")
-    phone_number = forms.CharField(label="Phone number", max_length=15, widget=forms.TextInput(attrs={"placeholder":"9876543210",}), help_text="Phone number with code")
+    phone_number = forms.CharField(label="Phone number", max_length=15, widget=forms.TextInput(attrs={"placeholder":"9876543210",}), help_text="Phone number with code. For example 02225722545 (with neither spaces nor dashes)")
     
-    cat_check = forms.BooleanField(required=False, initial=False, label="Check this if you belong to SEBC Category")
+    cat_check = forms.BooleanField(required=False, initial=False, label="Check this if you belong to SEBC-M Category")
 
     def clean_phone_number(self):
         pno = self.cleaned_data['phone_number']
