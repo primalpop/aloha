@@ -42,7 +42,7 @@ def user_login(request):
         if form.is_valid():
             user = form.cleaned_data
             login(request, user)
-            status = user.get_profile().application.submitted #Getting the submission status
+            status = user.get_profile().application.submitted #Getting the submission status          
             if status:
                 return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(user.username,)))
             else:  
@@ -62,7 +62,10 @@ def submit_details(request, reg_no):
         Get the secondary email address, phone number and save it to the Profile.
     """
     user = request.user
-    
+    category = user.get_profile().application.cgy #Getting the Category information
+    #Flag set based on OBC Check
+    if category == "B": cat_flag = True
+    else: cat_flag = False  
     if request.method == "POST":
         form = UserDetailsForm(user, request.POST)
         if form.is_valid():
@@ -74,7 +77,7 @@ def submit_details(request, reg_no):
                 
     else:
         form = UserDetailsForm(request.user)
-        context = {"form": form}
+        context = {"form": form, "cat_flag": cat_flag}
         return render(request, 'allotter/details.html', context)              
        
 def get_details(user, error_message = ""):
@@ -161,7 +164,7 @@ def submit_options(request, reg_no):
  
     for option in options_available_list:   
         option_pref = request.POST[unicode(option.opt_code)]           
-        options_chosen_list.append([option_pref, str(option.opt_code)]) #[preference, option code]
+        options_chosen_list.append([int(option_pref), str(option.opt_code)]) #[preference, option code]
     
       
     options_chosen_list.sort() #Sorting by preference
@@ -169,9 +172,8 @@ def submit_options(request, reg_no):
     for opt in options_chosen_list:
         if int(opt[0]): #ignoring the options for which None was marked
             options_code_list.append(opt[1])
-    
-    print options_code_list     
-    user_application.options_selected = rem_dup(options_code_list) #Saving the data in model   
+        
+    user_application.options_selected = options_code_list #Saving the data in model   
     user_application.submitted = True #Submission Status
     user_application.save() 
     return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(reg_no,)))

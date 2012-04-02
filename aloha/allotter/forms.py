@@ -101,6 +101,9 @@ class UserLoginForm(forms.Form):
       
         ##Authentication part
         user = authenticate(username = u_name, password = pwd)
+        user_profile = user.get_profile()
+        user_profile.dd_no = dd_no
+        user_profile.save()
         if not user:
             raise forms.ValidationError("Application Number or Registration Number doesn't match.")
         return user
@@ -131,7 +134,8 @@ class UserDetailsForm(forms.Form):
                 help_text="Enter a valid email id where you will able to receive correspondence from JAM 2012.")
     phone_number = forms.CharField(label="Phone number", max_length=15, widget=forms.TextInput(attrs={"placeholder":"9876543210",}), help_text="Phone number with code")
     
-    
+    cat_check = forms.BooleanField(required=False, initial=False, label="Check this if you belong to SEBC Category")
+
     def clean_phone_number(self):
         pno = self.cleaned_data['phone_number']
         if str(pno).strip(digits):
@@ -144,10 +148,14 @@ class UserDetailsForm(forms.Form):
         
         email = self.cleaned_data['email']
         phone_number = self.cleaned_data['phone_number']
-        
+        cat_check = self.cleaned_data['cat_check']
+           
         if email and phone_number:
             user_profile.secondary_email = email
             user_profile.phone_number = phone_number
+            
+        if cat_check:    
+            user_profile.cat_status = True
             
         else:
             raise forms.ValidationError("Make sure that you have entered all the details.")    
