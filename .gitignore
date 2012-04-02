@@ -10,3 +10,8 @@ parts/
 develop-eggs/
 bin/
 .installed.cfg
+*csv
+*.tar
+*.txt
+
+
