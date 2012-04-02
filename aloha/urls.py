@@ -11,6 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 	url(r'^allotter/', include('allotter.urls')),
 	url(r'^browser-version', direct_to_template, {'template': 'browser-version.html'}),
+	url(r'^about', direct_to_template, {'template': 'about.html'}),
     url(r'^robots\.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
     # Examples:
     # url(r'^$', 'aloha.views.home', name='home'),

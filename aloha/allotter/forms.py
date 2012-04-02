@@ -12,7 +12,7 @@ from crispy_forms.layout import Submit
 from string import digits, uppercase
 
 BIRTH_YEAR_CHOICES = tuple(range(1960, 1994, 1))
-DD_YEAR_CHOICES = (2011, 2012)
+DD_YEAR_CHOICES = (2012,)
 
 
 class UserLoginForm(forms.Form):
@@ -30,7 +30,7 @@ class UserLoginForm(forms.Form):
             initial=datetime.date.today)
     
     dd_no = forms.CharField(label="Demand Draft Number",
-            max_length=10, help_text="Valid DD Number")
+            max_length=6, help_text="Valid DD Number")
     
     dd_date = forms.DateField(label="Date of Issue",
             help_text="Please ensure that Demand Draft is valid",
@@ -90,14 +90,13 @@ class UserLoginForm(forms.Form):
 
         ##Validating the DD Details
         
-        if dd_no and dd_amount:
-            if dd_no.strip(digits+uppercase):
-                raise forms.ValidationError("Not a valid Demand Draft Number")
-            elif dd_amount != 300:
-                raise forms.ValidationError("Make sure the amount matches what is mentioned in brochure")
+        if not dd_no and not dd_amount:
+            raise forms.ValidationError("Fill in the Demand Draft Details") 
+        elif len(dd_no) != 6 or dd_no.count('0') == 6 or dd_no.strip(digits):
+            raise forms.ValidationError("Demand Draft Number you have entered is not valid.")       
+        if dd_amount != 300:
+            raise forms.ValidationError("Make sure the amount matches what is mentioned in brochure")
                   
-        else:
-            raise forms.ValidationError("Fill in the Demand Draft Details")
       
         ##Authentication part
         user = authenticate(username = u_name, password = pwd)
@@ -126,15 +125,15 @@ class UserDetailsForm(forms.Form):
         self.helper.form_id = 'id-detailsform'
         self.helper.form_method = 'post'
         self.helper.form_class = 'form-horizontal'
-        self.helper.form_action = "/allotter/"+user.username+"/details/"
+        self.helper.form_action = "/allotter/details/"
         self.helper.add_input(Submit('submit', 'Submit'))
         super(UserDetailsForm, self).__init__(*args, **kwargs)
 
     email = forms.EmailField(label="Email Address", widget=forms.TextInput(attrs={"placeholder":"john@example.com",}),
                 help_text="Enter a valid email id where you will able to receive correspondence from JAM 2012.")
-    phone_number = forms.CharField(label="Phone number", max_length=15, widget=forms.TextInput(attrs={"placeholder":"9876543210",}), help_text="Phone number with code")
+    phone_number = forms.CharField(label="Phone number", max_length=15, widget=forms.TextInput(attrs={"placeholder":"9876543210",}), help_text="Phone number with code. For example 02225722545 (with neither spaces nor dashes)")
     
-    cat_check = forms.BooleanField(required=False, initial=False, label="Check this if you belong to SEBC Category")
+    cat_check = forms.BooleanField(required=False, initial=False, label="Check this if you belong to SEBC-M Category")
 
     def clean_phone_number(self):
         pno = self.cleaned_data['phone_number']

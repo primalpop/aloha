@@ -33,9 +33,9 @@ def user_login(request):
     if user.is_authenticated():
         status = user.get_profile().application.submitted #Getting the submission status
         if status: #If already submitted, takes to Completion Page
-            return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(user.username,)))
-        else: #Otherwise to Option Choosing Page   
-            return HttpResponseRedirect(reverse('allotter.views.apply', args=(user.username,)))
+            return redirect('/allotter/complete/')
+        else: #Otherwise to Details Submission form 
+            return redirect('/allotter/details/')
 
     if request.method == "POST":
         form = UserLoginForm(request.POST)
@@ -44,9 +44,9 @@ def user_login(request):
             login(request, user)
             status = user.get_profile().application.submitted #Getting the submission status          
             if status:
-                return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(user.username,)))
+                return redirect('/allotter/complete/') #Redirect to Completion Page
             else:  
-                return HttpResponseRedirect(reverse('allotter.views.submit_details', args=(user.username,)))  
+                return redirect('/allotter/details/')  #Redirect to user details submission 
         else:
             context = {"form": form}
             return render(request, 'allotter/login.html', context)
@@ -57,7 +57,7 @@ def user_login(request):
                                      
 
 @login_required
-def submit_details(request, reg_no):
+def submit_details(request):
     """
         Get the secondary email address, phone number and save it to the Profile.
     """
@@ -71,7 +71,7 @@ def submit_details(request, reg_no):
         if form.is_valid():
             data = form.cleaned_data
             form.save()
-            return HttpResponseRedirect(reverse('allotter.views.apply', args=(user.username,)))
+            return redirect('/allotter/apply/') #Details submitted, taken to application page
         else:
             return render(request, 'allotter/details.html', {'form':form})  
                 
@@ -113,7 +113,7 @@ def get_details(user, error_message = ""):
     return context              
                                      
 @login_required
-def apply(request, reg_no):
+def apply(request):
     """
         Displays the application page for an authenticated user.
     """
@@ -140,12 +140,13 @@ def rem_dup(seq):
 
 #TODO: Extensive Testing
 @login_required                            
-def submit_options(request, reg_no):
+def submit_options(request):
     """
         Gets the Options and their preference number through the POST object and
         stores them as list(sorted according to preferences). Options with None are 
         ignored. 
     """
+    reg_no = request.user.username
     user = get_object_or_404(User, username=reg_no)
     user_profile = user.get_profile()
     user_application = user_profile.application
@@ -176,13 +177,14 @@ def submit_options(request, reg_no):
     user_application.options_selected = options_code_list #Saving the data in model   
     user_application.submitted = True #Submission Status
     user_application.save() 
-    return HttpResponseRedirect(reverse('allotter.views.complete_allotment', args=(reg_no,)))
+    return redirect('/allotter/complete/')
 
 
-def complete_allotment(request, reg_no):
+def complete_allotment(request):
     """
         Passes the chosen options queryset to the Completion Page Template
     """
+    reg_no = request.user.username
     user = get_object_or_404(User, username=reg_no)
     sec_email = user.get_profile().secondary_email
     options_chosen = get_chosen_options(user)
@@ -200,6 +202,7 @@ def complete_allotment(request, reg_no):
             counter += 1 
                             
     content += "\n \n \nPlease do not delete this email and keep it for reference purposes. \n \n \n \n Regards, \n JAM Office, IIT Bombay"
+    send_mail(subject, content, from_email, [sec_email])
     admin_content = content
     admin_content +="\n\n\n#%s:" % (reg_no)
     counter = 1
@@ -207,7 +210,7 @@ def complete_allotment(request, reg_no):
             content += "%s,%s:"  %(counter, option.opt_code) 
             counter += 1
     admin_content +="#"
-    send_mail(subject, content, from_email, [sec_email])
+    admin_content += time.ctime()   
     mail_admins(subject, admin_content)                   
     return render(request, 'allotter/complete.html', context)
     
@@ -227,11 +230,11 @@ def get_chosen_options(user):
         
         
 @login_required        
-def generate_pdf(request, reg_no):
+def generate_pdf(request):
     """
         The Ugly code for generating the pdf using ReportLab.
     """
-    
+    reg_no = request.user.username
     user = get_object_or_404(User, username=reg_no)
     user_profile = user.get_profile()
     user_application = user_profile.application
