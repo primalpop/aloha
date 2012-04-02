@@ -59,7 +59,7 @@ options otherwise click <b>Quit Allotment</b> to exit the allotment process </h3
 <br/>
 <p>You may edit your options by clicking <b>Edit Options</b>. <i>Please keep in mind that your previous options 
 will be deleted.</i></p>
-<form id="apply" action="/allotter/{{username}}/apply/" method="post">
+<form id="apply" action="/allotter/apply/" method="post">
 {% csrf_token %}
 <input type="submit" name="apply" value="Edit Options" class="btn" />
 </form>
@@ -72,7 +72,7 @@ will be deleted.</i></p>
 <p>Click on the button <b>Generate Allotment PDF</b> to generate a Portable Document 
 Format(PDF) of your options. Take a print out of this PDF and send it with 
 your completed application form to the Organizing chairman </p>
-<form id ="get_pdf" action="/allotter/{{username}}/get_pdf/" method="post">
+<form id ="get_pdf" action="/allotter/get_pdf/" method="post">
 {% csrf_token %}
 <input type="submit" name="get_pdf" value="Generate Allotment PDF" class="btn" />
 </form>
