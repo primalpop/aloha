@@ -153,13 +153,10 @@ class UserDetailsForm(forms.Form):
         if email and phone_number:
             user_profile.secondary_email = email
             user_profile.phone_number = phone_number
-            
+        else:
+            raise forms.ValidationError("Make sure that you have entered all the details.")            
         if cat_check:    
             user_profile.cat_status = True
             
-        else:
-            raise forms.ValidationError("Make sure that you have entered all the details.")    
 
         user_profile.save()
-        
-        
