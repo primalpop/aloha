@@ -18,26 +18,32 @@ $(document).ready(function(){
 });
 </script>
 <script>
-$(document).ready(function(){
+jQuery.fn.reset = function () {
+  $(this).each (function() { this.reset(); });
+}
+
+$(document).ready(function(){   
     $("#check").click(function() {
         $("#checkButton").attr("disabled", !this.checked);
     });
 });
 </script>
 
+
 <script>
 $(document).ready(function(){
+    $("#allotment-form").reset();
+    $("select").attr('disabled', false)
     $("select").change(function () {
-        console.log("here we go")
             var $this = $(this);
             var thisClass = $this.attr("class");
             var prevVal = $this.data("prev");
             var otherSelects = $("select").not(this);
             var otherSameSelects = $("select[class=" + thisClass + "]").not(this);
-            console.log(otherSameSelects)
             if ($(this).val() !="0"){
                 otherSelects.find("option[value=" + $(this).val() + "]").attr('disabled', true);
                 otherSameSelects.find("option[value=" + $(this).val() + "]").attr('selected', 'selected');
+                otherSameSelects.attr('disabled', true);
             }
             if (prevVal) {
                     otherSelects.find("option[value=" + prevVal + "]").attr('disabled', false);
@@ -100,7 +106,7 @@ Listing the options for first test paper.
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="/allotter/submit/" method="post">
+<form action="/allotter/submit/" method="post" id="allotment-form">
 {% csrf_token %}
 
 <table class="table table-bordered table-striped">
