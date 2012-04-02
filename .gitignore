@@ -11,7 +11,7 @@ develop-eggs/
 bin/
 .installed.cfg
 *csv
-*.tar
+*.tar.gz
 *.txt
 
 
