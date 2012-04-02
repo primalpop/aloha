@@ -27,7 +27,6 @@
 405:M.Sc.-Ph.D. Dual Degree in Physics:IIT Kanpur
 501:Joint M.Sc.-Ph.D. Programme in Chemistry:IIT Kharagpur
 502:Joint M.Sc.-Ph.D. Programme in Geology:IIT Kharagpur
-503:Joint M.Sc.-Ph.D. Programme in Geophysics:IIT Kharagpur
 504:Joint M.Sc.-Ph.D. Programme in Mathematics:IIT Kharagpur
 505:Joint M.Sc.-Ph.D. Programme in Physics:IIT Kharagpur
 601:M.Sc. Chemistry (4 Semesters):IIT Madras

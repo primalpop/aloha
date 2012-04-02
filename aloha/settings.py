@@ -7,8 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('Primal Pappachan', 'primal@fossee.in'),
-     ('Parth Buch', 'parth.buch.115@gmail.com'),
+     ('JAM Admissions 2012', 'gate3@iitb.ac.in'),
 )
 
 AUTHORS = (
@@ -172,9 +171,9 @@ EMAIL_HOST = 'smtp-auth.iitb.ac.in'
 EMAIL_PORT = '25'
 
 # Optional SMTP authentication information for EMAIL_HOST.
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'gate3'
+EMAIL_HOST_PASSWORD = 'inter7384'
+EMAIL_USE_TLS = True
 
 
 
