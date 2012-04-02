@@ -9,9 +9,10 @@ from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from string import digits
+from string import digits, uppercase
 
 BIRTH_YEAR_CHOICES = tuple(range(1960, 1994, 1))
+DD_YEAR_CHOICES = (2011, 2012)
 
 
 class UserLoginForm(forms.Form):
@@ -27,7 +28,18 @@ class UserLoginForm(forms.Form):
     dob = forms.DateField(label="Date of Birth", 
             widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES, attrs={"class":"span1"}),
             initial=datetime.date.today)
-
+    
+    dd_no = forms.CharField(label="Demand Draft Number",
+            max_length=10, help_text="Valid DD Number")
+    
+    dd_date = forms.DateField(label="Date of Issue",
+            help_text="Please ensure that Demand Draft is valid",
+            widget=SelectDateWidget(years=DD_YEAR_CHOICES, attrs={"class":"span1"}),
+            initial=datetime.date.today)
+                            
+    dd_amount = forms.IntegerField(label="Amount", 
+                help_text="As mentioned on the brochure.")
+    
     def clean_username(self):
         u_name = self.cleaned_data["username"]
         
@@ -64,7 +76,10 @@ class UserLoginForm(forms.Form):
     def clean(self):
         super(UserLoginForm, self).clean()
         u_name, pwd = self.cleaned_data.get('username'), self.cleaned_data.get('password')
-        dob = self.cleaned_data['dob']
+        dob = self.cleaned_data["dob"]
+        dd_no = self.cleaned_data.get("dd_no")
+        dd_date = self.cleaned_data.get("dd_date")
+        dd_amount = self.cleaned_data.get("dd_amount")
         try:
             current_user = User.objects.get(username__exact = u_name)
             profile = current_user.get_profile()
@@ -73,6 +88,16 @@ class UserLoginForm(forms.Form):
         except User.DoesNotExist:
             raise forms.ValidationError("Correct the following errors and try logging in again.")
 
+        ##Validating the DD Details
+        
+        if dd_no and dd_amount:
+            if dd_no.strip(digits+uppercase):
+                raise forms.ValidationError("Not a valid Demand Draft Number")
+            elif dd_amount != 300:
+                raise forms.ValidationError("Make sure the amount matches what is mentioned in brochure")
+                  
+        else:
+            raise forms.ValidationError("Fill in the Demand Draft Details")
       
         ##Authentication part
         user = authenticate(username = u_name, password = pwd)
@@ -117,8 +142,15 @@ class UserDetailsForm(forms.Form):
         cleaned_data = self.cleaned_data
         user_profile = self.user.get_profile()
         
-        user_profile.secondary_email = self.cleaned_data['email']
-        user_profile.phone_number = self.cleaned_data['phone_number']
+        email = self.cleaned_data['email']
+        phone_number = self.cleaned_data['phone_number']
+        
+        if email and phone_number:
+            user_profile.secondary_email = email
+            user_profile.phone_number = phone_number
+            
+        else:
+            raise forms.ValidationError("Make sure that you have entered all the details.")    
 
         user_profile.save()
         
