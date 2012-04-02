@@ -34,8 +34,8 @@ def user_login(request):
         status = user.get_profile().application.submitted #Getting the submission status
         if status: #If already submitted, takes to Completion Page
             return redirect('/allotter/complete/')
-        else: #Otherwise to Option Choosing Page   
-            return redirect('/allotter/apply/')
+        else: #Otherwise to Details Submission form 
+            return redirect('/allotter/details/')
 
     if request.method == "POST":
         form = UserLoginForm(request.POST)
@@ -202,6 +202,7 @@ def complete_allotment(request):
             counter += 1 
                             
     content += "\n \n \nPlease do not delete this email and keep it for reference purposes. \n \n \n \n Regards, \n JAM Office, IIT Bombay"
+    send_mail(subject, content, from_email, [sec_email])
     admin_content = content
     admin_content +="\n\n\n#%s:" % (reg_no)
     counter = 1
@@ -210,7 +211,6 @@ def complete_allotment(request):
             counter += 1
     admin_content +="#"
     admin_content += time.ctime()   
-    send_mail(subject, content, from_email, [sec_email])
     mail_admins(subject, admin_content)                   
     return render(request, 'allotter/complete.html', context)
     
