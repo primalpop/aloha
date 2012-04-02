@@ -181,3 +181,6 @@ EMAIL_USE_TLS = False
 
 AUTH_PROFILE_MODULE = "allotter.Profile"
 LOGIN_URL = '/allotter/login'
+
+APPLICATION_PDF = "application.pdf"
+
